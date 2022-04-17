@@ -1,4 +1,6 @@
 import Card from "../../components/card/MenuItem";
+import section from "../../../interfaces/menuItem";
+import "./HomePage.scss";
 
 // type menuItem = {
 //   imageUrl: string;
@@ -11,15 +13,22 @@ import Card from "../../components/card/MenuItem";
 //   menuItems: menuItem[];
 // };
 
-type section = {
-  title: string;
-  imageUrl: string;
-  id: number;
-  linkUrl: string;
-};
-
 const INITIAL_STATE = {
   sections: [
+    {
+      title: "womens",
+      imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
+      size: "large",
+      id: 4,
+      linkUrl: "shop/womens",
+    },
+    {
+      title: "mens",
+      imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
+      size: "large",
+      id: 5,
+      linkUrl: "shop/mens",
+    },
     {
       title: "hats",
       imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
@@ -37,20 +46,6 @@ const INITIAL_STATE = {
       imageUrl: "https://i.ibb.co/0jqHpnp/sneakers.png",
       id: 3,
       linkUrl: "shop/sneakers",
-    },
-    {
-      title: "womens",
-      imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
-      size: "large",
-      id: 4,
-      linkUrl: "shop/womens",
-    },
-    {
-      title: "mens",
-      imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
-      size: "large",
-      id: 5,
-      linkUrl: "shop/mens",
     },
   ],
 };

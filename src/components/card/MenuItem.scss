@@ -1,0 +1,15 @@
+.card_container {
+  & img {
+    height: 15rem;
+  }
+
+  & img:hover,
+  &.large img:hover {
+    cursor: pointer;
+  }
+
+  &.large img {
+    height: 25rem;
+    width: 40rem;
+  }
+}

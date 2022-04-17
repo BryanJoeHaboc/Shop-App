@@ -1,27 +1,17 @@
-import "./MenuItem";
-
-type menuItem = {
-  imageUrl: string;
-  imageAlt: string;
-  size: string;
-};
+import section from "../../../interfaces/menuItem";
+import "./MenuItem.scss";
 
 type Props = {
   menuItem: section;
 };
 
-type section = {
-  title: string;
-  imageUrl: string;
-  id: number;
-  linkUrl: string;
-};
-
 export default function Card({ menuItem }: Props) {
   // const { imageUrl, imageAlt, size } = menuItem;
+  console.log(menuItem);
+  console.log(menuItem.size);
   return (
-    <div className={`card_container`}>
-      <img src={menuItem.linkUrl} alt={menuItem.title} />
+    <div className={`card_container ${menuItem.size}`}>
+      <img src={menuItem.imageUrl} alt={menuItem.title} />
     </div>
   );
 }
