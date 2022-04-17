@@ -22,6 +22,7 @@
     justify-content: center;
     gap: 2rem;
     font-size: 1.25rem;
+    padding: 0 2rem;
 
     a {
       color: inherit;
@@ -40,5 +41,10 @@
     align-items: center;
     justify-content: center;
     gap: 2rem;
+
+    .header_actions_favorites:hover,
+    .header_actions_cart:hover {
+      cursor: pointer;
+    }
   }
 }
