@@ -6,12 +6,13 @@ type Props = {
 };
 
 export default function Card({ menuItem }: Props) {
-  // const { imageUrl, imageAlt, size } = menuItem;
+  const { title, imageUrl, linkUrl, size } = menuItem;
   console.log(menuItem);
-  console.log(menuItem.size);
+  console.log(size);
   return (
-    <div className={`card_container ${menuItem.size}`}>
-      <img src={menuItem.imageUrl} alt={menuItem.title} />
+    <div className={`card_container ${size}`}>
+      <img src={imageUrl} alt={title} />
+      <p>{title.toUpperCase()}</p>
     </div>
   );
 }

@@ -54,7 +54,7 @@ export default function Homepage() {
   return (
     <div className="homepage_container">
       {INITIAL_STATE.sections.map((menuItem: section) => (
-        <Card menuItem={menuItem} />
+        <Card menuItem={menuItem} key={menuItem.id} />
       ))}
     </div>
   );

@@ -1,4 +1,6 @@
 .card_container {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  position: relative;
   & img {
     height: 15rem;
   }
@@ -11,5 +13,15 @@
   &.large img {
     height: 25rem;
     width: 40rem;
+  }
+
+  & p {
+    position: absolute;
+    margin: 0 auto;
+    top: 40%;
+    width: 100%;
+    align-items: center;
+    color: rgb(222, 155, 21);
+    font-size: 3rem;
   }
 }
