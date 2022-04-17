@@ -1,4 +1,4 @@
-import "./header.component.scss";
+import "./Header.scss";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SearchBar from "../searchbar/searchbar.component";

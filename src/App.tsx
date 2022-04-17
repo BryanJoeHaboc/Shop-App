@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import { Counter } from "./features/counter/Counter";
-import Header from "./components/header/header.component";
+import Header from "./components/header/Header";
 import "./App.css";
 
 function App() {
