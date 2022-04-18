@@ -1,9 +1,11 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./Header.scss";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SearchBar from "../searchbar/searchbar.component";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import IconButton from "@mui/material/IconButton";
 
 export default function Header() {
   console.log("header called");
@@ -27,9 +29,9 @@ export default function Header() {
         <div className="header_actions_favorites">
           <FavoriteIcon />
         </div>
-        <div className="header_actions_cart">
-          <ShoppingCartIcon />
-        </div>
+        <IconButton color="inherit" aria-label="add to shopping cart">
+          <AddShoppingCartIcon />
+        </IconButton>
       </div>
     </div>
   );

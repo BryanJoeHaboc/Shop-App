@@ -1,4 +1,13 @@
 .category_container {
-  display: flex;
-  justify-content: center;
+  & p.container_title {
+    font-size: 2rem;
+    width: 21%;
+  }
+
+  & .category_product_container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
 }

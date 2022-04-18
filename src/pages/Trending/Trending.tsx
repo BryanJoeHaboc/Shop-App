@@ -1,7 +1,7 @@
 import data from "../../data/data";
 import Category from "../../../interfaces/category";
-
 import CategoryComponent from "../../components/category/Category";
+import "./Trending.scss";
 
 export default function Trending() {
   return (

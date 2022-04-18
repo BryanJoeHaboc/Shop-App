@@ -1,5 +1,9 @@
 .product_container {
   width: 20%;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+
   color: rgba(0, 0, 0, 0.87);
   box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px,
     rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px;
@@ -12,5 +16,16 @@
 
   &:hover {
     cursor: pointer;
+  }
+
+  & p {
+    font-size: 1.5rem;
+    // background-color: blueviolet;
+  }
+
+  & .product_container_actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
   }
 }
