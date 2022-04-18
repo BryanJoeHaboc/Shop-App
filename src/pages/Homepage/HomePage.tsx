@@ -1,4 +1,4 @@
-import Card from "../../components/card/MenuItem";
+import Card from "../../components/menuItem/MenuItem";
 import section from "../../../interfaces/menuItem";
 import "./HomePage.scss";
 
