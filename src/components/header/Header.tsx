@@ -31,7 +31,12 @@ export default function Header() {
         <div className="header_actions_favorites">
           <FavoriteIcon />
         </div>
-        <IconButton color="inherit" aria-label="add to shopping cart">
+
+        <IconButton
+          id="lblCartCount"
+          color="inherit"
+          aria-label="add to shopping cart"
+        >
           <AddShoppingCartIcon />
         </IconButton>
       </div>
