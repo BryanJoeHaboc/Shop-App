@@ -4,5 +4,5 @@ export default interface Category {
   id: number;
   title: string;
   routeName: string;
-  items: product[];
+  items: product[] | [];
 }

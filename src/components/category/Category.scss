@@ -10,4 +10,8 @@
     gap: 1rem;
     margin-bottom: 3rem;
   }
+
+  & .category_product_container.wrap {
+    flex-wrap: wrap;
+  }
 }

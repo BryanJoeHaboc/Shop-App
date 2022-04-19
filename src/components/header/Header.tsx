@@ -8,11 +8,13 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
 
 export default function Header() {
-  console.log("header called");
   return (
     <div className="header_container">
       <div className="header_logo_container">
-        <FavoriteIcon />
+        <Link to="/">
+          {" "}
+          <FavoriteIcon />
+        </Link>
       </div>
       <nav className="header_links">
         <Link to="/allproducts">All Products</Link>

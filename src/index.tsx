@@ -11,6 +11,8 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import Homepage from "./pages/Homepage/HomePage";
 
+import RenderCategory from "./components/category/RenderCategory";
+
 const container = document.getElementById("root");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 
@@ -22,6 +24,9 @@ root.render(
           <Route path="/" element={<App />}>
             <Route index element={<Homepage />} />
             <Route path="allproducts" element={<Trending />} />
+            <Route path="product">
+              <Route path=":categoryType" element={<RenderCategory />}></Route>
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
