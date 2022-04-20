@@ -12,7 +12,7 @@ import * as serviceWorker from "./serviceWorker";
 import Homepage from "./pages/Homepage/HomePage";
 
 import RenderCategory from "./components/category/RenderCategory";
-
+import Header from "./components/header/Header";
 const container = document.getElementById("root");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 
@@ -20,13 +20,15 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<Homepage />} />
-            <Route path="allproducts" element={<Trending />} />
-            <Route path="product">
-              <Route path=":categoryType" element={<RenderCategory />}></Route>
-            </Route>
+            <Route path="products" element={<Trending />} />
+            <Route
+              path="/products/:categoryType"
+              element={<RenderCategory />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>

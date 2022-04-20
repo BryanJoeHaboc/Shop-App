@@ -17,12 +17,12 @@ export default function Header() {
         </Link>
       </div>
       <nav className="header_links">
-        <Link to="/allproducts">All Products</Link>
-        <Link to="/womens">Womens</Link>
-        <Link to="/mens">Mens</Link>
-        <Link to="/hats">Hats</Link>
-        <Link to="/sneakers">Sneakers</Link>
-        <Link to="/bags">Bags</Link>
+        <Link to="/products">All Products</Link>
+        <Link to="/products/womens">Womens</Link>
+        <Link to="/products/mens">Mens</Link>
+        <Link to="/products/hats">Hats</Link>
+        <Link to="/products/sneakers">Sneakers</Link>
+        <Link to="/products/bags">Bags</Link>
       </nav>
       <div className="header_actions">
         <div className="header_actions_searchbar_container">

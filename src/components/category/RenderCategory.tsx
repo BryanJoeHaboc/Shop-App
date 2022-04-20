@@ -16,9 +16,10 @@ export default function RenderCategory({ category }: Props) {
   let singleCategory: Category[] = [];
   if (categoryType) {
     singleCategory = data.collections.filter(
-      (category) => category.title === categoryType
+      (category) => category.title.toLowerCase() === categoryType
     );
-    console.log(singleCategory);
+
+    console.log(singleCategory[0]);
   }
 
   return (
