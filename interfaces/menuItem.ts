@@ -1,7 +1,7 @@
 export default interface section {
   title: string;
   imageUrl: string;
-  id: number;
+  _id: number;
   linkUrl: string;
   size?: string | undefined;
 }

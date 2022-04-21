@@ -9,7 +9,7 @@ export default function Trending() {
   return (
     <div className="trending_container">
       {data.collections.map((category: Category) => {
-        return <RenderCategory category={category} key={category.id} />;
+        return <RenderCategory category={category} key={category._id} />;
       })}{" "}
     </div>
   );
