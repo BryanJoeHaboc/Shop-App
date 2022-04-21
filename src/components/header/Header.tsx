@@ -6,8 +6,12 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import SearchBar from "../searchbar/searchbar.component";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
+import ShoppingCartComponent from "../../pages/ShoppingCart/ShoppingCart";
+import { useState } from "react";
 
 export default function Header() {
+  const [showCart, setShowCart] = useState(false);
+
   return (
     <div className="header_container">
       <div className="header_logo_container">
@@ -31,14 +35,18 @@ export default function Header() {
         <div className="header_actions_favorites">
           <FavoriteIcon />
         </div>
-
-        <IconButton
-          id="lblCartCount"
-          color="inherit"
-          aria-label="add to shopping cart"
-        >
-          <AddShoppingCartIcon />
-        </IconButton>
+        <div className="header_actions_cart_holder">
+          <IconButton
+            color="inherit"
+            aria-label="add to shopping cart"
+            onClick={() => {
+              setShowCart(!showCart);
+            }}
+          >
+            <AddShoppingCartIcon />
+          </IconButton>
+          {showCart ? <ShoppingCartComponent /> : null}
+        </div>
       </div>
     </div>
   );

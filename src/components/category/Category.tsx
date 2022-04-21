@@ -3,9 +3,6 @@ import ProductComponent from "../../components/product/Product";
 import Category from "../../../interfaces/category";
 import "./Category.scss";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
-import ShoppingItem from "../../../interfaces/shoppingItem";
-import { RootState } from "../../app/store";
 
 type Props = {
   category: Category;
@@ -17,8 +14,6 @@ export default function CategoryComponent({ category, count }: Props) {
   let prodCount = 0;
 
   const _items: Array<Product> = items;
-
-  const shoppingCart = useAppSelector((state: RootState) => state.shoppingCart);
 
   return (
     <div className={`category_container`}>
@@ -36,16 +31,6 @@ export default function CategoryComponent({ category, count }: Props) {
             return <ProductComponent product={product} key={product._id} />;
           }
           return null;
-        })}
-        <div>{shoppingCart.totalAmount}</div>
-        {shoppingCart.items.map((cartItem: ShoppingItem) => {
-          return (
-            <div>
-              <p>{cartItem.product.name}</p>
-              <p>{cartItem.product.price}</p>
-              <p>{cartItem.quantity}</p>
-            </div>
-          );
         })}
       </div>
     </div>

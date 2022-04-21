@@ -1,0 +1,28 @@
+.shopping_cart_container {
+  width: 25rem;
+  height: 28rem;
+  position: absolute;
+  right: 10px;
+  overflow-y: auto;
+  display: flex;
+  padding: 1rem;
+
+  gap: 1.5rem;
+
+  flex-direction: column;
+  background-color: aquamarine;
+  color: rgba(0, 0, 0, 0.87);
+  box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px,
+    rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px;
+
+  & .shopping_cart_items {
+    display: flex;
+    height: 30%;
+    color: rgba(0, 0, 0, 0.87);
+    box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px,
+      rgb(0 0 0 / 14%) 0px 3px 4px 0px, rgb(0 0 0 / 12%) 0px 1px 8px 0px;
+    img {
+      width: 30%;
+    }
+  }
+}
