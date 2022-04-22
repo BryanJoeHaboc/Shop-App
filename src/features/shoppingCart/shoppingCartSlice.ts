@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import ShoppingCart from "../../../interfaces/shoppingCart";
 import ShoppingItem from "../../../interfaces/shoppingItem";
+import { RootState } from "../../app/store";
 
 const initialState: ShoppingCart = {
   _id: "lol",
@@ -15,6 +16,7 @@ export const shoppingCartSlice = createSlice({
   // minus item
   // delete all items
   // delete item
+  // total item
   reducers: {
     addItem: (state, action: PayloadAction<ShoppingItem>) => {
       const index = state.items.findIndex(
@@ -57,6 +59,12 @@ export const shoppingCartSlice = createSlice({
   },
 });
 
-export const { addItem, subtractItem } = shoppingCartSlice.actions;
+export const totalAmount = (state: RootState) =>
+  state.shoppingCart.items.reduce(
+    (prev, curr) => prev + curr.quantity * curr.product.price,
+    0
+  );
+export const { addItem, subtractItem, deleteAllItem, deleteItem } =
+  shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;

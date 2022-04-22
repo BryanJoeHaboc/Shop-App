@@ -21,6 +21,9 @@ export default function Header() {
         </Link>
       </div>
       <nav className="header_links">
+        <Link to="/cart">
+          <h1>Cart</h1>
+        </Link>
         <Link to="/products">All Products</Link>
         <Link to="/products/womens">Womens</Link>
         <Link to="/products/mens">Mens</Link>

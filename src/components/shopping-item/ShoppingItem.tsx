@@ -1,13 +1,18 @@
+import Button from "@mui/material/Button";
+import { ThemeProvider } from "@mui/material/styles";
+
 import { useAppDispatch } from "../../app/hooks";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 import {
   addItem,
   subtractItem,
+  deleteItem,
 } from "../../features/shoppingCart/shoppingCartSlice";
+import { theme } from "../custom-button/CustomButton";
 import "./ShoppingItem.scss";
 
 const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
-  const dispath = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const shoppingItem = {
     _id,
@@ -16,11 +21,15 @@ const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
   };
 
   const handleIncreaseItemQty = (shoppingItem: ShoppingItem) => {
-    dispath(addItem(shoppingItem));
+    dispatch(addItem(shoppingItem));
   };
 
   const handleDecreaseItemQty = (shoppingItem: ShoppingItem) => {
-    dispath(subtractItem(shoppingItem));
+    dispatch(subtractItem(shoppingItem));
+  };
+
+  const handleDeleteItem = (shoppingItem: ShoppingItem) => {
+    dispatch(deleteItem(shoppingItem));
   };
 
   return (
@@ -49,7 +58,17 @@ const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
             &#62;
           </span>
         </h2>
-        <button>Delete</button>
+        <ThemeProvider theme={theme}>
+          <Button
+            onClick={() => {
+              handleDeleteItem(shoppingItem);
+            }}
+            color="darkApple"
+            variant="contained"
+          >
+            Delete Item
+          </Button>
+        </ThemeProvider>
       </div>
     </div>
   );
