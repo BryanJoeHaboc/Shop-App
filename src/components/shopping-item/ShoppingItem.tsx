@@ -4,6 +4,7 @@ import {
   addItem,
   subtractItem,
 } from "../../features/shoppingCart/shoppingCartSlice";
+import "./ShoppingItem.scss";
 
 const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
   const dispath = useAppDispatch();
@@ -30,15 +31,17 @@ const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
         <p className="bold_600">Price: {product.price}</p>
         <p className="bold_600">
           {" "}
+          Qty:
           <span
+            className="pointer"
             onClick={() => {
               handleDecreaseItemQty(shoppingItem);
             }}
           >
-            Qty:
+            &#60; {quantity}{" "}
           </span>{" "}
-          &#60; {quantity}{" "}
           <span
+            className="pointer"
             onClick={() => {
               handleIncreaseItemQty(shoppingItem);
             }}

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { stat } from "fs";
 import ShoppingCart from "../../../interfaces/shoppingCart";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 
@@ -14,7 +13,7 @@ export const shoppingCartSlice = createSlice({
   initialState,
   // add item
   // minus item
-  // delete cart
+  // delete all items
   // delete item
   reducers: {
     addItem: (state, action: PayloadAction<ShoppingItem>) => {
@@ -34,13 +33,26 @@ export const shoppingCartSlice = createSlice({
       const index = state.items.findIndex(
         (item) => item._id === action.payload._id
       );
+      console.log(index);
       if (index >= 0) {
         if (state.items[index].quantity === 1) {
-          // delete item
+          const tempItem = state.items.filter(
+            (item) => item._id !== action.payload._id
+          );
+          state.items = tempItem;
         } else {
           state.items[index].quantity = state.items[index].quantity - 1;
         }
       }
+    },
+    deleteItem: (state, action: PayloadAction<ShoppingItem>) => {
+      const tempItem = state.items.filter(
+        (item) => item._id !== action.payload._id
+      );
+      state.items = tempItem;
+    },
+    deleteAllItem: (state, action: PayloadAction<ShoppingItem>) => {
+      state.items = [];
     },
   },
 });

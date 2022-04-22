@@ -34,6 +34,10 @@
   font-weight: 600;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);
