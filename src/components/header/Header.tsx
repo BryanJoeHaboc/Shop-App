@@ -6,7 +6,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import SearchBar from "../searchbar/searchbar.component";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
-import ShoppingCartComponent from "../../pages/ShoppingCart/ShoppingCart";
+import ShoppingCartComponent from "../../pages/shopping-cart-window/ShoppingCartWindow";
 import { useState } from "react";
 
 export default function Header() {

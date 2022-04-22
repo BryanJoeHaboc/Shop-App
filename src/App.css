@@ -38,6 +38,10 @@
   cursor: pointer;
 }
 
+.center {
+  text-align: center;
+}
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);

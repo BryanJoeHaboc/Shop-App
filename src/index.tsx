@@ -5,15 +5,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./index.css";
 import App from "./App";
-import Trending from "./pages/Trending/Trending";
+import Trending from "./pages/trending/Trending";
 import { persistor, store } from "./app/store";
 import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
-import Homepage from "./pages/Homepage/HomePage";
+import Homepage from "./pages/homepage/HomePage";
 
 import RenderCategory from "./components/category/RenderCategory";
 import Header from "./components/header/Header";
-import ShoppingCartComponent from "./pages/ShoppingCart/ShoppingCart";
+import ShoppingCartComponent from "./pages/shopping-cart/ShoppingCart";
 import { PersistGate } from "redux-persist/integration/react";
 const container = document.getElementById("root");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript

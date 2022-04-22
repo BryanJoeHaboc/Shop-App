@@ -4,7 +4,7 @@ import {
   addItem,
   subtractItem,
 } from "../../features/shoppingCart/shoppingCartSlice";
-import "./ShoppingItem.scss";
+import "./ShoppingItemWindow.scss";
 
 const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
   const dispath = useAppDispatch();
@@ -24,16 +24,16 @@ const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
   };
 
   return (
-    <div className="shopping_cart_page_items">
+    <div className="shopping_cart_items">
       <img src={product.imageUrl} alt="" />
-      <div className="shopping_cart_page_items_info">
-        <h1 className="bold_900">{product.name}</h1>
-        <h2 className="bold_600">Price: {product.price}</h2>
-        <h2 className="bold_600">
+      <div className="shopping_cart_items_info">
+        <p className="bold_900">{product.name}</p>
+        <p className="bold_600">Price: {product.price}</p>
+        <p className="bold_600">
           {" "}
           Qty:
           <span
-            className="pointer bold_900"
+            className="pointer"
             onClick={() => {
               handleDecreaseItemQty(shoppingItem);
             }}
@@ -41,15 +41,14 @@ const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
             &#60; {quantity}{" "}
           </span>{" "}
           <span
-            className="pointer bold_900"
+            className="pointer"
             onClick={() => {
               handleIncreaseItemQty(shoppingItem);
             }}
           >
             &#62;
           </span>
-        </h2>
-        <button>Delete</button>
+        </p>
       </div>
     </div>
   );

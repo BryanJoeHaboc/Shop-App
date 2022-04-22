@@ -1,9 +1,9 @@
-import "./ShoppingCart.scss";
+import "./ShoppingCartWindow.scss";
 
 import { useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import ShoppingItem from "../../../interfaces/shoppingItem";
-import ShoppingItemComponent from "../../components/shopping-item/ShoppingItem";
+import ShoppingItemComponent from "../../components/shopping-item-window/ShoppingItemWindow";
 
 const ShoppingCartComponent = () => {
   const shoppingCart = useAppSelector((state: RootState) => state.shoppingCart);
