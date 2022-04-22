@@ -1,5 +1,3 @@
-import Product from "../../../interfaces/product";
-import ProductComponent from "../../components/product/Product";
 import Category from "../../../interfaces/category";
 import "./Category.scss";
 import data from "../../data/data";
