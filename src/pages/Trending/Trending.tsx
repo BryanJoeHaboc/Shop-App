@@ -2,7 +2,6 @@ import data from "../../data/data";
 import Category from "../../../interfaces/category";
 import "./Trending.scss";
 import RenderCategory from "../../components/category/RenderCategory";
-import { Outlet } from "react-router-dom";
 
 export default function Trending() {
   console.log("renderd");

@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function Card({ menuItem }: Props) {
-  const { title, imageUrl, linkUrl, size } = menuItem;
+  const { title, imageUrl, size } = menuItem;
   return (
     <div className={`card_container ${size}`}>
       <img src={imageUrl} alt={title} />
