@@ -48,8 +48,11 @@ export default function Header() {
           >
             <AddShoppingCartIcon />
           </IconButton>
+
           {showCart ? <ShoppingCartComponent /> : null}
         </div>
+        <div className="header_actions_login pointer">Login</div>
+        <div className="header_actions_sign_up pointer">Sign Up</div>
       </div>
     </div>
   );
