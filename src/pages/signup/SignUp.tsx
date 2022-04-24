@@ -1,9 +1,12 @@
 import { useState, Dispatch } from "react";
+import { ThemeProvider } from "@emotion/react";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
-import "./LoginPage.scss";
+import { theme } from "../../components/custom-button/CustomButton";
+import "./SignUp.scss";
 
-export default function LoginPage() {
+export default function SignUp() {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -20,64 +23,75 @@ export default function LoginPage() {
 
   return (
     <div className="login_page_container">
+      <h1>Shopper</h1>
       <form className="login_page_form_container" onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="firstName">First Name:</label>
           <TextField
             type="text"
             value={firstName}
             onChange={(event) => handleChange(setFirstName, event)}
             id="standard-basic"
-            label="Standard"
+            label="First Name"
             variant="standard"
+            fullWidth
           />
         </div>
         <div>
-          <label htmlFor="lastName">Last Name:</label>
           <TextField
             type="text"
             value={lastName}
             onChange={(event) => handleChange(setLastName, event)}
             id="standard-basic"
-            label="Standard"
+            label="Last Name"
             variant="standard"
+            fullWidth
           />
         </div>
         <div>
-          <label htmlFor="email">Email:</label>{" "}
           <TextField
             type="text"
             value={email}
             onChange={(event) => handleChange(setEmail, event)}
             id="standard-basic"
-            label="Standard"
+            label="Email"
             variant="standard"
+            fullWidth
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>{" "}
           <TextField
             type="password"
             value={password}
             onChange={(event) => handleChange(setPassword, event)}
             id="standard-basic"
-            label="Standard"
+            label="Password"
             variant="standard"
+            fullWidth
           />
         </div>
         <div>
-          <label htmlFor="confirmPassword">Confirm Password:</label>{" "}
           <TextField
             type="password"
             value={confirmPassword}
             onChange={(event) => handleChange(setConfirmPassword, event)}
             id="standard-basic"
-            label="Standard"
+            label="Confirm Password"
             variant="standard"
+            fullWidth
           />
         </div>
         <div>
-          <input type="submit" value="Submit" />
+          <ThemeProvider theme={theme}>
+            <Button
+              size="large"
+              fullWidth
+              color="steelBlue"
+              variant="contained"
+              type="submit"
+            >
+              Sign Up{" "}
+            </Button>
+          </ThemeProvider>
         </div>
       </form>
     </div>

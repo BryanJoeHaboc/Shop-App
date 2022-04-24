@@ -15,7 +15,7 @@ import RenderCategory from "./components/category/RenderCategory";
 import Header from "./components/header/Header";
 import ShoppingCartComponent from "./pages/shopping-cart/ShoppingCart";
 import { PersistGate } from "redux-persist/integration/react";
-import LoginPage from "./pages/login/LoginPage";
+import SignUp from "./pages/signup/SignUp";
 const container = document.getElementById("root");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 
@@ -34,7 +34,7 @@ root.render(
                 path="/products/:categoryType"
                 element={<RenderCategory />}
               />
-              <Route path="login" element={<LoginPage />} />
+              <Route path="signup" element={<SignUp />} />
             </Route>
           </Routes>
         </BrowserRouter>

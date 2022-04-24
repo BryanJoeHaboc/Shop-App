@@ -1,4 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ShoppingCart from "../../../interfaces/shoppingCart";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 import { RootState } from "../../app/store";

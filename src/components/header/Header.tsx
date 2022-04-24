@@ -51,8 +51,12 @@ export default function Header() {
 
           {showCart ? <ShoppingCartComponent /> : null}
         </div>
-        <div className="header_actions_login pointer">Login</div>
-        <div className="header_actions_sign_up pointer">Sign Up</div>
+        <div className="header_actions_login pointer">
+          <Link to="/login">Login</Link>
+        </div>
+        <div className="header_actions_sign_up pointer">
+          <Link to={"/signup"}>Signup</Link>
+        </div>
       </div>
     </div>
   );
