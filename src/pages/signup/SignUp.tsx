@@ -2,9 +2,12 @@ import { useState, Dispatch } from "react";
 import { ThemeProvider } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import axios from "axios";
 
+import { SignUpUser } from "../../../interfaces/user";
 import { theme } from "../../components/custom-button/CustomButton";
 import "./SignUp.scss";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const [firstName, setFirstName] = useState<string>("");
@@ -13,9 +16,38 @@ export default function SignUp() {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
+  const navigate = useNavigate();
+
   // for update: event: React.ChangeEvent for submit: event: React.FormEvent for click: event: React.MouseEvent
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (event: {}) => {
+    const e = event as React.FormEvent<HTMLInputElement>;
+
+    e.preventDefault();
+
+    try {
+      // need validation
+
+      const user: SignUpUser = {
+        firstName,
+        lastName,
+        password,
+        confirmPassword,
+        email,
+        userType: "user",
+      };
+      const result = await axios.post("/signup", user);
+
+      // NOTE: diff errors
+      if (!result) {
+        throw Error("Error in creating User!");
+      }
+
+      navigate("/login");
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const handleChange = (setter: Dispatch<string>, event: {}) => {
     const e = event as React.ChangeEvent<HTMLInputElement>;
     setter(e.target.value);
@@ -24,7 +56,10 @@ export default function SignUp() {
   return (
     <div className="login_page_container">
       <h1>Shopper</h1>
-      <form className="login_page_form_container" onSubmit={handleSubmit}>
+      <form
+        className="login_page_form_container"
+        onSubmit={(e) => handleSubmit(e)}
+      >
         <div>
           <TextField
             type="text"

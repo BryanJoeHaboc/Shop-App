@@ -1,6 +1,5 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./index.css";
@@ -19,6 +18,9 @@ import SignUp from "./pages/signup/SignUp";
 import LoginPage from "./pages/login/LoginPage";
 const container = document.getElementById("root");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
+const axios = require("axios").default;
+
+axios.defaults.baseURL = "http://localhost:5000";
 
 root.render(
   <React.StrictMode>
@@ -30,11 +32,11 @@ root.render(
             <Route path="/" element={<App />}>
               <Route index element={<Homepage />} />
               <Route path="cart" element={<ShoppingCartComponent />}></Route>
-              <Route path="products" element={<Trending />} />
-              <Route
-                path="/products/:categoryType"
-                element={<RenderCategory />}
-              />
+              <Route path="products">
+                <Route index element={<Trending />}></Route>
+                <Route path=":categoryType" element={<RenderCategory />} />
+              </Route>
+              <Route path="home" element={<Trending />}></Route>
               <Route path="signup" element={<SignUp />} />
               <Route path="login" element={<LoginPage />} />
             </Route>
