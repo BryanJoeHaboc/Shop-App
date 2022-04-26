@@ -3,18 +3,23 @@ import { useState, Dispatch } from "react";
 import { ThemeProvider } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { read, utils, writeFileXLSX } from "xlsx";
+import { read, utils } from "xlsx";
 import axios from "axios";
 
 import { theme } from "../../components/custom-button/CustomButton";
 import "../signup/SignUp.scss";
-import { useNavigate } from "react-router-dom";
+
+import { getUser } from "../../features/user/userSlice";
+import { useAppSelector } from "../../app/hooks";
 
 export default function AddProducts() {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
+
+  const user = useAppSelector(getUser);
+
   const handleSubmit = async (event: {}) => {
     const e = event as React.FormEvent<HTMLInputElement>;
 
@@ -61,7 +66,7 @@ export default function AddProducts() {
 
     const file = event.target!.files[0]!;
 
-    reader.onload = function (event) {
+    reader.onload = async function (event) {
       /* Parse data */
       const bstr = event.target!.result;
       const wb = read(bstr, { type: rABS ? "binary" : "array" });
@@ -70,7 +75,18 @@ export default function AddProducts() {
       const ws = wb.Sheets[wsname];
       /* Convert array of arrays */
       const data = utils.sheet_to_json(ws, { header: 1 });
-      console.log(data);
+
+      const result = await axios.post(
+        "/admin/products",
+        { data },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      console.log(result);
     };
 
     reader.readAsBinaryString(file);
