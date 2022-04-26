@@ -8,13 +8,27 @@ import axios from "axios";
 import { User } from "../../../interfaces/user";
 import { theme } from "../../components/custom-button/CustomButton";
 import "../signup/SignUp.scss";
+import { useAppDispatch } from "../../app/hooks";
+import { setUser } from "../../features/user/userSlice";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-
+  const dispatch = useAppDispatch();
   // for update: event: React.ChangeEvent for submit: event: React.FormEvent for click: event: React.MouseEvent
+
+  type fetchedUser = {
+    data: {
+      token: string;
+      user: {
+        firstName: string;
+        lastName: string;
+        userType: string;
+        userId: string;
+      };
+    };
+  };
 
   const handleSubmit = async (event: {}) => {
     const e = event as React.FormEvent<HTMLInputElement>;
@@ -28,12 +42,22 @@ export default function LoginPage() {
         email,
         password,
       };
-      const result = await axios.post("/login", user);
+      const fetchedUser: fetchedUser = await axios.post("/login", user);
 
       // NOTE: diff errors
-      if (!result) {
+      if (!fetchedUser) {
         throw Error("Error in Logging In!");
       }
+      console.log(fetchedUser);
+      dispatch(
+        setUser({
+          firstName: fetchedUser.data.user.firstName,
+          lastName: fetchedUser.data.user.lastName,
+          userType: fetchedUser.data.user.userType,
+          token: fetchedUser.data.token,
+          userId: fetchedUser.data.user.userType,
+        })
+      );
 
       navigate("/home");
     } catch (e) {

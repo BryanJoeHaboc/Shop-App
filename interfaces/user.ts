@@ -4,7 +4,7 @@ export interface User {
 }
 
 export interface LoggedInUser {
-  jwtToken: string | "";
+  token: string | "";
   userId: string | "";
   firstName: string | "";
   lastName: string | "";
