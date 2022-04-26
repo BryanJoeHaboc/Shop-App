@@ -11,6 +11,7 @@ import "./App.css";
 import { useAppSelector } from "./app/hooks";
 import { getUser } from "./features/user/userSlice";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
+import AddProducts from "./pages/add-products/AddProducts";
 function App() {
   const user = useAppSelector(getUser);
 
@@ -34,9 +35,17 @@ function App() {
                   <Trending />
                 </ProtectedRoute>
               }
-            ></Route>
+            />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<LoginPage />} />
+            <Route
+              path="admin/addproduct"
+              element={
+                <ProtectedRoute user={user}>
+                  <AddProducts />
+                </ProtectedRoute>
+              }
+            />
           </Route>
         </Routes>
       </main>
