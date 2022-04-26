@@ -21,7 +21,7 @@ export const userSlice = createSlice({
       state.token = action.payload.token;
       state.userType = action.payload.userType;
     },
-    clearUser: (state, action: PayloadAction<LoggedInUser>) => {
+    clearUser: (state) => {
       state.firstName = "";
       state.lastName = "";
       state.userId = "";
