@@ -8,12 +8,27 @@ import ShoppingCartComponent from "./pages/shopping-cart/ShoppingCart";
 import SignUp from "./pages/signup/SignUp";
 import LoginPage from "./pages/login/LoginPage";
 import "./App.css";
-import { useAppSelector } from "./app/hooks";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
 import { getUser } from "./features/user/userSlice";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
 import AddProducts from "./pages/add-products/AddProducts";
+import { useEffect } from "react";
+import getProductsFromDB from "./features/product/productSlice";
+
 function App() {
   const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // dispatch(getProductsFromDB())
+    //   .unwrap()
+    //   .then((data: {}) => {
+    //     console.log(data);
+    //   })
+    //   .catch((error: Error) => {
+    //     console.log(error);
+    //   });
+  }, []);
 
   return (
     <div>
