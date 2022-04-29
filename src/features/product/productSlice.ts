@@ -30,7 +30,7 @@ export const getProductsFromDB = createAsyncThunk<
   {
     rejectValue: ErrorPayload | AxiosError;
   }
->("product/getAllProduct", async (_: void, thunkApi) => {
+>("product/get-all-product", async (_: void, thunkApi) => {
   try {
     const response = await axios.get("/products");
     if (response.status === 404) {
@@ -56,7 +56,7 @@ export const addProductsToDB = createAsyncThunk<
     rejectValue: AxiosError | ErrorPayload;
     extra: { jwt: string };
   }
->("product/addProduct", async (product, thunkApi) => {
+>("product/add-product", async (product, thunkApi) => {
   try {
     const response = await axios.post("/admin/add-product", {
       headers: {
@@ -79,6 +79,33 @@ export const addProductsToDB = createAsyncThunk<
   }
 });
 
+export const deleteProductFromDB = createAsyncThunk<
+  SuccessMessage,
+  Product,
+  {
+    rejectValue: AxiosError | ErrorPayload;
+    extra: { jwt: string };
+  }
+>("product/delete-product", async (product, thunkApi) => {
+  try {
+    const response = await axios.post(`/admin/delete/${product._id}`, {
+      headers: {
+        Authorization: `Bearer: ${thunkApi.extra.jwt}`,
+      },
+    });
+
+    const error = response.data as ErrorPayload;
+
+    if (error.status === 401 || error.status === 500) {
+      return thunkApi.rejectWithValue(error as ErrorPayload);
+    }
+
+    return response.data as SuccessMessage;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error as AxiosError);
+  }
+});
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
@@ -92,7 +119,15 @@ export const productSlice = createSlice({
       //   (category) => category.title === action.payload.title
       // );
     },
-    deleteProduct: () => {},
+    deleteProduct: (state, action: PayloadAction<Product>) => {
+      const index = state.collections.findIndex(
+        (category) => category.title === action.payload.title
+      );
+      const tempArray = state.collections[index].items.filter(
+        (product) => product._id !== action.payload._id
+      );
+      state.collections[index].items = tempArray;
+    },
     editProduct: () => {},
   },
   extraReducers: (builder) => {
