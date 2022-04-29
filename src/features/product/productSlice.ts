@@ -12,9 +12,7 @@ interface Products {
 
 const initialState: Products = {
   collections: [],
-
   totalItems: 0,
-
   status: "",
 };
 
@@ -47,6 +45,40 @@ export const getProductsFromDB = createAsyncThunk<
   }
 });
 
+type SuccessMessage = {
+  message: string;
+};
+
+export const addProductsToDB = createAsyncThunk<
+  SuccessMessage,
+  Product,
+  {
+    rejectValue: AxiosError | ErrorPayload;
+    extra: { jwt: string };
+  }
+>("product/addProduct", async (product, thunkApi) => {
+  try {
+    const response = await axios.post("/admin/add-product", {
+      headers: {
+        Authorization: `Bearer: ${thunkApi.extra.jwt}`,
+      },
+      data: {
+        product,
+      },
+    });
+
+    const error = response.data as ErrorPayload;
+
+    if (error.status === 422 || error.status === 500) {
+      return thunkApi.rejectWithValue(error as ErrorPayload);
+    }
+
+    return response.data as SuccessMessage;
+  } catch (err: any) {
+    return thunkApi.rejectWithValue(err as AxiosError);
+  }
+});
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
@@ -55,7 +87,11 @@ export const productSlice = createSlice({
       state.collections = action.payload.collections;
       state.totalItems = action.payload.totalItems;
     },
-    addProduct: () => {},
+    addProduct: (state, action: PayloadAction<Product>) => {
+      // const index = state.collections.findIndex(
+      //   (category) => category.title === action.payload.title
+      // );
+    },
     deleteProduct: () => {},
     editProduct: () => {},
   },
