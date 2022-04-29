@@ -48,14 +48,14 @@ export default function LoginPage() {
       if (!fetchedUser) {
         throw Error("Error in Logging In!");
       }
-      console.log(fetchedUser);
+
       dispatch(
         setUser({
           firstName: fetchedUser.data.user.firstName,
           lastName: fetchedUser.data.user.lastName,
           userType: fetchedUser.data.user.userType,
           token: fetchedUser.data.token,
-          userId: fetchedUser.data.user.userType,
+          userId: fetchedUser.data.user.userId,
         })
       );
 

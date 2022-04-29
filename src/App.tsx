@@ -13,21 +13,27 @@ import { getUser } from "./features/user/userSlice";
 import ProtectedRoute from "./components/protected/ProtectedRoute";
 import AddProducts from "./pages/add-products/AddProducts";
 import { useEffect } from "react";
-import getProductsFromDB from "./features/product/productSlice";
+import {
+  addAllProducts,
+  getProducts,
+  getProductsFromDB,
+} from "./features/product/productSlice";
 
 function App() {
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
+  const allProducts = useAppSelector(getProducts);
+
+  const getProductsOnFirstLoad = async () => {
+    if (!allProducts.collections.length) {
+      const result = await dispatch(getProductsFromDB()).unwrap();
+      dispatch(addAllProducts(result));
+      console.log("first render!");
+    }
+  };
 
   useEffect(() => {
-    // dispatch(getProductsFromDB())
-    //   .unwrap()
-    //   .then((data: {}) => {
-    //     console.log(data);
-    //   })
-    //   .catch((error: Error) => {
-    //     console.log(error);
-    //   });
+    getProductsOnFirstLoad();
   }, []);
 
   return (

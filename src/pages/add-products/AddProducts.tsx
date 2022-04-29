@@ -75,18 +75,15 @@ export default function AddProducts() {
       const ws = wb.Sheets[wsname];
       /* Convert array of arrays */
       const data = utils.sheet_to_json(ws, { header: 1 });
-
       const result = await axios.post(
         "/admin/products",
-        { data },
+        { data, userId: user.userId },
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         }
       );
-
-      console.log(result);
     };
 
     reader.readAsBinaryString(file);
