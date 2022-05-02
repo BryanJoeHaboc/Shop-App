@@ -10,44 +10,53 @@ import { theme } from "../../components/custom-button/CustomButton";
 import "../signup/SignUp.scss";
 
 import { getUser } from "../../features/user/userSlice";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { addProductsToDB } from "../../features/product/productSlice";
 
 export default function AddProducts() {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<string>("");
+  const [price, setPrice] = useState<number>(0);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
   const user = useAppSelector(getUser);
-
+  const dispatch = useAppDispatch();
   const handleSubmit = async (event: {}) => {
     const e = event as React.FormEvent<HTMLInputElement>;
 
     e.preventDefault();
 
     try {
-      // need validation
-      //   const user: SignUpUser = {
-      //     firstName,
-      //     lastName,
-      //     password,
-      //     confirmPassword,
-      //     email,
-      //     userType: "user",
-      //   };
-      //   const result = await axios.post("/signup", user);
-      // NOTE: diff errors
-      //   if (!result) {
-      //     throw Error("Error in creating User!");
-      //   }
-      //   navigate("/login");
+      const result = dispatch(
+        addProductsToDB({
+          name,
+          imageUrl,
+          price,
+          description,
+          title,
+        })
+      );
+
+      console.log(result);
     } catch (e) {
       console.log(e);
     }
   };
-  const handleChange = (setter: Dispatch<string>, event: {}) => {
+  const handleChange = (
+    setter: Dispatch<string> | Dispatch<number>,
+    event: {}
+  ) => {
     const e = event as React.ChangeEvent<HTMLInputElement>;
-    setter(e.target.value);
+    const stringSetter = setter as Dispatch<string>;
+    const numSetter = setter as Dispatch<number>;
+
+    if (e.target.name === "price") {
+      const value = e.target.value as unknown as number;
+      numSetter(value);
+    } else {
+      stringSetter(e.target.value);
+    }
   };
 
   const handleUpload = (e: {}) => {
@@ -75,15 +84,19 @@ export default function AddProducts() {
       const ws = wb.Sheets[wsname];
       /* Convert array of arrays */
       const data = utils.sheet_to_json(ws, { header: 1 });
-      const result = await axios.post(
-        "/admin/products",
-        { data, userId: user.userId },
-        {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      try {
+        const result = await axios.post(
+          "/admin/products",
+          { data, userId: user.userId },
+          {
+            headers: {
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     reader.readAsBinaryString(file);
@@ -101,7 +114,18 @@ export default function AddProducts() {
             value={title}
             onChange={(event) => handleChange(setTitle, event)}
             id="standard-basic"
-            label="First Name"
+            label="Category"
+            variant="standard"
+            fullWidth
+          />
+        </div>
+        <div>
+          <TextField
+            type="text"
+            value={name}
+            onChange={(event) => handleChange(setName, event)}
+            id="standard-basic"
+            label="Name"
             variant="standard"
             fullWidth
           />
@@ -112,7 +136,19 @@ export default function AddProducts() {
             value={description}
             onChange={(event) => handleChange(setDescription, event)}
             id="standard-basic"
-            label="Last Name"
+            label="Description"
+            variant="standard"
+            fullWidth
+          />
+        </div>
+        <div>
+          <TextField
+            type="number"
+            value={price}
+            name="price"
+            onChange={(event) => handleChange(setPrice, event)}
+            id="standard-basic"
+            label="Price"
             variant="standard"
             fullWidth
           />
@@ -120,25 +156,29 @@ export default function AddProducts() {
         <div>
           <TextField
             type="text"
-            value={price}
-            onChange={(event) => handleChange(setPrice, event)}
+            value={imageUrl}
+            onChange={(event) => handleChange(setImageUrl, event)}
             id="standard-basic"
-            label="Email"
+            label="Image Url"
             variant="standard"
             fullWidth
           />
         </div>
         <div>
-          <TextField
-            type="password"
-            value={imageUrl}
-            onChange={(event) => handleChange(setImageUrl, event)}
-            id="standard-basic"
-            label="Password"
-            variant="standard"
-            fullWidth
-          />
+          <ThemeProvider theme={theme}>
+            <Button
+              size="large"
+              fullWidth
+              color="steelBlue"
+              variant="contained"
+              component="label"
+            >
+              Add Product
+              <input type="submit" hidden />
+            </Button>
+          </ThemeProvider>
         </div>
+        Or
         <div>
           <ThemeProvider theme={theme}>
             <Button

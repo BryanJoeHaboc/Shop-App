@@ -16,7 +16,7 @@ export default function ProductComponent(props: Props) {
 
   const handleAddItemToCart = () => {
     const shoppingItem = {
-      _id: props.product._id.toString(),
+      _id: props.product._id!.toString(),
       product: props.product,
       quantity: 1,
     };

@@ -54,13 +54,16 @@ export const addProductsToDB = createAsyncThunk<
   Product,
   {
     rejectValue: AxiosError | ErrorPayload;
-    extra: { jwt: string };
   }
->("product/add-product", async (product, thunkApi) => {
+>("product/add-product", async (product, { getState, rejectWithValue }) => {
   try {
-    const response = await axios.post("/admin/add-product", {
+    const { user } = getState() as RootState;
+    console.log(product);
+    const response = await axios({
+      method: "post",
+      url: "/admin/add-product",
       headers: {
-        Authorization: `Bearer: ${thunkApi.extra.jwt}`,
+        Authorization: `Bearer: ${user.token}`,
       },
       data: {
         product,
@@ -70,12 +73,12 @@ export const addProductsToDB = createAsyncThunk<
     const error = response.data as ErrorPayload;
 
     if (error.status === 422 || error.status === 500) {
-      return thunkApi.rejectWithValue(error as ErrorPayload);
+      return rejectWithValue(error as ErrorPayload);
     }
 
     return response.data as SuccessMessage;
   } catch (err: any) {
-    return thunkApi.rejectWithValue(err as AxiosError);
+    return rejectWithValue(err as AxiosError);
   }
 });
 
@@ -84,13 +87,16 @@ export const deleteProductFromDB = createAsyncThunk<
   Product,
   {
     rejectValue: AxiosError | ErrorPayload;
-    extra: { jwt: string };
   }
 >("product/delete-product", async (product, thunkApi) => {
   try {
+    const { user } = thunkApi.getState() as RootState;
     const response = await axios.post(`/admin/delete/${product._id}`, {
       headers: {
-        Authorization: `Bearer: ${thunkApi.extra.jwt}`,
+        Authorization: `Bearer: ${user.token}`,
+      },
+      data: {
+        userId: user.userId,
       },
     });
 
