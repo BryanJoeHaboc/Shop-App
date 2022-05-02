@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import Product from "../../../interfaces/product";
 import { RootState } from "../../app/store";
 import Category from "../../../interfaces/category";
+import { LoggedInUser } from "../../../interfaces/user";
 
 interface Products {
   collections: Category[];
@@ -90,7 +91,7 @@ export const deleteProductFromDB = createAsyncThunk<
   }
 >("product/delete-product", async (product, thunkApi) => {
   try {
-    const { user } = thunkApi.getState() as RootState;
+    const { user }: { user: LoggedInUser } = thunkApi.getState() as RootState;
     const response = await axios.post(`/admin/delete/${product._id}`, {
       headers: {
         Authorization: `Bearer: ${user.token}`,

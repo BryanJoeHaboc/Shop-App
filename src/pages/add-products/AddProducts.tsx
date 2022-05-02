@@ -22,6 +22,7 @@ export default function AddProducts() {
 
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
+
   const handleSubmit = async (event: {}) => {
     const e = event as React.FormEvent<HTMLInputElement>;
 
@@ -43,6 +44,7 @@ export default function AddProducts() {
       console.log(e);
     }
   };
+
   const handleChange = (
     setter: Dispatch<string> | Dispatch<number>,
     event: {}
