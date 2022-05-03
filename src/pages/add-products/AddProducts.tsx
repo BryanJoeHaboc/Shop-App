@@ -11,7 +11,10 @@ import "../signup/SignUp.scss";
 
 import { getUser } from "../../features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { addProductsToDB } from "../../features/product/productSlice";
+import {
+  addProduct,
+  addProductsToDB,
+} from "../../features/product/productSlice";
 
 export default function AddProducts() {
   const [title, setTitle] = useState<string>("");
@@ -29,17 +32,18 @@ export default function AddProducts() {
     e.preventDefault();
 
     try {
-      const result = dispatch(
-        addProductsToDB({
-          name,
-          imageUrl,
-          price,
-          description,
-          title,
-        })
-      );
+      const prod = {
+        name,
+        imageUrl,
+        price,
+        description,
+        title,
+      };
+      const result = dispatch(addProductsToDB(prod));
 
       console.log(result);
+
+      dispatch(addProduct(prod));
     } catch (e) {
       console.log(e);
     }

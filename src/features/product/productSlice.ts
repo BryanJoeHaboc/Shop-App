@@ -121,10 +121,12 @@ export const productSlice = createSlice({
       state.collections = action.payload.collections;
       state.totalItems = action.payload.totalItems;
     },
-    addProduct: (state, action: PayloadAction<Product>) => {
-      // const index = state.collections.findIndex(
-      //   (category) => category.title === action.payload.title
-      // );
+    addProduct: (state, action) => {
+      const index = state.collections.findIndex(
+        (category) => category.title === action.payload.title
+      );
+      const item = action.payload as Product;
+      state.collections[index].items.push(item);
     },
     deleteProduct: (state, action: PayloadAction<Product>) => {
       const index = state.collections.findIndex(
