@@ -44,6 +44,16 @@
   text-align: center;
 }
 
+.flex__buttons__05 {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.flex__buttons__2 {
+  display: flex;
+  gap: 2rem;
+}
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);
