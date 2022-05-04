@@ -25,7 +25,7 @@ export default function ProductComponent(props: Props) {
         </div>
       ) : (
         <div className="product_container_actions">
-          <AdminActions />
+          <AdminActions product={props.product} />
         </div>
       )}
     </div>

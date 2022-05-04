@@ -77,7 +77,7 @@ export const addProductsToDB = createAsyncThunk<
       return rejectWithValue(error as ErrorPayload);
     }
 
-    return response.data as SuccessMessage;
+    return response.data;
   } catch (err: any) {
     return rejectWithValue(err as AxiosError);
   }
@@ -92,7 +92,7 @@ export const deleteProductFromDB = createAsyncThunk<
 >("product/delete-product", async (product, thunkApi) => {
   try {
     const { user }: { user: LoggedInUser } = thunkApi.getState() as RootState;
-    const response = await axios.post(`/admin/delete/${product._id}`, {
+    const response = await axios.delete(`/admin/product/${product._id}`, {
       headers: {
         Authorization: `Bearer: ${user.token}`,
       },
@@ -107,7 +107,7 @@ export const deleteProductFromDB = createAsyncThunk<
       return thunkApi.rejectWithValue(error as ErrorPayload);
     }
 
-    return response.data as SuccessMessage;
+    return response.data;
   } catch (error) {
     return thunkApi.rejectWithValue(error as AxiosError);
   }

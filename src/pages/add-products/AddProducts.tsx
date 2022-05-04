@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { read, utils } from "xlsx";
 import axios from "axios";
+import { InputLabel } from "@material-ui/core";
 
 import { theme } from "../../components/custom-button/CustomButton";
 import "../signup/SignUp.scss";
@@ -15,6 +16,7 @@ import {
   addProduct,
   addProductsToDB,
 } from "../../features/product/productSlice";
+import { MenuItem, Select } from "@mui/material";
 
 export default function AddProducts() {
   const [title, setTitle] = useState<string>("");
@@ -39,7 +41,7 @@ export default function AddProducts() {
         description,
         title,
       };
-      const result = dispatch(addProductsToDB(prod));
+      const result = dispatch(addProductsToDB(prod)).unwrap();
 
       console.log(result);
 
@@ -115,15 +117,25 @@ export default function AddProducts() {
         onSubmit={(e) => handleSubmit(e)}
       >
         <div>
-          <TextField
-            type="text"
+          <InputLabel id="category">Choose a Category</InputLabel>
+          <Select
+            style={{ width: 400 }}
+            labelId="select-category"
             value={title}
-            onChange={(event) => handleChange(setTitle, event)}
-            id="standard-basic"
             label="Category"
-            variant="standard"
-            fullWidth
-          />
+            size="medium"
+            onChange={(event) => handleChange(setTitle, event)}
+          >
+            <MenuItem disabled value="">
+              <em>Choose a Category</em>
+            </MenuItem>
+            <MenuItem value="Hats">Hats</MenuItem>
+            <MenuItem value="Sneakers">Sneakers</MenuItem>
+            <MenuItem value="Jackets">Jackets</MenuItem>
+            <MenuItem value="Womens">Womens</MenuItem>
+            <MenuItem value="Mens">Mens</MenuItem>
+            <MenuItem value="Bags">Bags</MenuItem>
+          </Select>
         </div>
         <div>
           <TextField
