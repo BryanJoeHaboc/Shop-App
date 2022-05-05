@@ -2,8 +2,8 @@ import "./Product.scss";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getUser } from "../../features/user/userSlice";
-import AdminActions from "../admin-actions/AdminActions";
-import UserActions from "../user-actions/UserActions";
+import AdminActions from "../admin/AdminActions";
+import UserActions from "../user/UserActions";
 import Product from "../../../interfaces/product";
 
 type Props = {
