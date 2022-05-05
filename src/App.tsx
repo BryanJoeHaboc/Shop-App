@@ -18,6 +18,7 @@ import {
   getProducts,
   getProductsFromDB,
 } from "./features/product/productSlice";
+import AdminHome from "./pages/admin/AdminHome";
 
 function App() {
   const user = useAppSelector(getUser);
@@ -59,14 +60,24 @@ function App() {
             />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<LoginPage />} />
-            <Route
-              path="admin/addproduct"
-              element={
-                <ProtectedRoute user={user}>
-                  <AddProducts />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="admin">
+              <Route
+                index
+                element={
+                  <ProtectedRoute user={user}>
+                    <AdminHome />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="addproduct"
+                element={
+                  <ProtectedRoute user={user}>
+                    <AddProducts />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
           </Route>
         </Routes>
       </main>

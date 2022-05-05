@@ -16,6 +16,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const dispatch = useAppDispatch();
+
   // for update: event: React.ChangeEvent for submit: event: React.FormEvent for click: event: React.MouseEvent
 
   type fetchedUser = {
@@ -49,17 +50,23 @@ export default function LoginPage() {
         throw Error("Error in Logging In!");
       }
 
+      const userType = fetchedUser.data.user.userType;
+
       dispatch(
         setUser({
           firstName: fetchedUser.data.user.firstName,
           lastName: fetchedUser.data.user.lastName,
-          userType: fetchedUser.data.user.userType,
+          userType,
           token: fetchedUser.data.token,
           userId: fetchedUser.data.user.userId,
         })
       );
 
-      navigate("/home");
+      if (userType === "user") {
+        navigate("/home");
+      } else if (userType === "admin") {
+        navigate("/admin");
+      }
     } catch (e) {
       console.log(e);
     }
@@ -81,7 +88,7 @@ export default function LoginPage() {
             type="text"
             value={email}
             onChange={(event) => handleChange(setEmail, event)}
-            id="standard-basic"
+            id="email"
             label="Email"
             variant="standard"
             fullWidth
@@ -92,7 +99,7 @@ export default function LoginPage() {
             type="password"
             value={password}
             onChange={(event) => handleChange(setPassword, event)}
-            id="standard-basic"
+            id="password"
             label="Password"
             variant="standard"
             fullWidth

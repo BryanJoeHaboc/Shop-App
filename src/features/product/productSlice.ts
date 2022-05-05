@@ -5,7 +5,7 @@ import { RootState } from "../../app/store";
 import Category from "../../../interfaces/category";
 import { LoggedInUser } from "../../../interfaces/user";
 
-interface Products {
+export interface Products {
   collections: Category[];
   totalItems: number;
   status: "loading" | "success" | "failed" | "";
@@ -22,6 +22,33 @@ interface ErrorPayload {
   message: string;
   data: [] | {};
 }
+
+export const getAdminProductsFromDB = createAsyncThunk<
+  Products,
+  void,
+  {
+    rejectValue: ErrorPayload | AxiosError;
+  }
+>("product/get-admin-product", async (_: void, thunkApi) => {
+  try {
+    const { user } = thunkApi.getState() as RootState;
+
+    const response = await axios.get(`/admin/products/${user.userId}`, {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    if (response.status === 404) {
+      return thunkApi.rejectWithValue(response.data as ErrorPayload);
+    }
+    return response.data as Products;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err))
+      return thunkApi.rejectWithValue(err as AxiosError);
+
+    return thunkApi.rejectWithValue(err as ErrorPayload);
+  }
+});
 
 export const getProductsFromDB = createAsyncThunk<
   // Return type of the payload creator
