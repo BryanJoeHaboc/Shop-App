@@ -41,11 +41,11 @@ export default function AddProducts() {
         description,
         title,
       };
-      const result = dispatch(addProductsToDB(prod)).unwrap();
-
+      const result = await dispatch(addProductsToDB(prod)).unwrap();
       console.log(result);
-
-      dispatch(addProduct(prod));
+      if (result.products) {
+        dispatch(addProduct(result.products));
+      }
     } catch (e) {
       console.log(e);
     }

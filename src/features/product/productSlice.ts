@@ -73,12 +73,15 @@ export const getProductsFromDB = createAsyncThunk<
   }
 });
 
-type SuccessMessage = {
+interface SuccessMessage {
   message: string;
-};
+}
+interface SuccessMessageAddProducts extends SuccessMessage {
+  products: Product;
+}
 
 export const addProductsToDB = createAsyncThunk<
-  SuccessMessage,
+  SuccessMessageAddProducts,
   Product,
   {
     rejectValue: AxiosError | ErrorPayload;
@@ -153,6 +156,7 @@ export const productSlice = createSlice({
         (category) => category.title === action.payload.title
       );
       const item = action.payload as Product;
+      console.log(item);
       state.collections[index].items.push(item);
     },
     deleteProduct: (state, action: PayloadAction<Product>) => {
@@ -175,6 +179,15 @@ export const productSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(getProductsFromDB.rejected, (state, action) => {
+      state.status = "failed";
+    });
+    builder.addCase(addProductsToDB.fulfilled, (state) => {
+      state.status = "success";
+    });
+    builder.addCase(addProductsToDB.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(addProductsToDB.rejected, (state) => {
       state.status = "failed";
     });
   },
