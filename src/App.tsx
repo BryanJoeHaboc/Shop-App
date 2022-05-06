@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Homepage from "./pages/homepage/HomePage";
 import Trending from "./pages/trending/Trending";
@@ -64,17 +64,25 @@ function App() {
               <Route
                 index
                 element={
-                  <ProtectedRoute user={user}>
-                    <AdminHome />
-                  </ProtectedRoute>
+                  user.userType === "admin" ? (
+                    <ProtectedRoute user={user}>
+                      <AdminHome />
+                    </ProtectedRoute>
+                  ) : (
+                    <Navigate to="/home" />
+                  )
                 }
               />
               <Route
                 path="addproduct"
                 element={
-                  <ProtectedRoute user={user}>
-                    <AddProducts />
-                  </ProtectedRoute>
+                  user.userType === "admin" ? (
+                    <ProtectedRoute user={user}>
+                      <AddProducts />
+                    </ProtectedRoute>
+                  ) : (
+                    <Navigate to="/home" />
+                  )
                 }
               />
             </Route>
