@@ -15,10 +15,12 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   addProduct,
   addProductsToDB,
+  editProduct,
+  editProductFromDB,
 } from "../../features/product/productSlice";
 import { MenuItem, Select } from "@mui/material";
 import Product from "../../../interfaces/product";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface Prop {
   state?: Product;
@@ -34,6 +36,7 @@ export default function AddProducts() {
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
   const { state } = useLocation() as Prop;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (state) {
@@ -59,12 +62,23 @@ export default function AddProducts() {
         price,
         description,
         title,
-      };
-      const result = await dispatch(addProductsToDB(prod)).unwrap();
-      console.log(result);
-      if (result.products) {
-        dispatch(addProduct(result.products));
+      } as Product;
+      let result;
+      if (state) {
+        prod._id = state._id;
+        result = await dispatch(editProductFromDB(prod)).unwrap();
+        if (result.product) {
+          dispatch(editProduct(result.product));
+          navigate("/admin");
+        }
+      } else {
+        result = await dispatch(addProductsToDB(prod)).unwrap();
+        if (result.product) {
+          dispatch(addProduct(result.product));
+          navigate("/admin");
+        }
       }
+      console.log(result);
     } catch (e) {
       console.log(e);
     }

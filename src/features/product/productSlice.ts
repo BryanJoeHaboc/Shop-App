@@ -23,6 +23,38 @@ interface ErrorPayload {
   data: [] | {};
 }
 
+export const editProductFromDB = createAsyncThunk<
+  SuccessMessageAddProducts,
+  Product,
+  { rejectValue: ErrorPayload | AxiosError }
+>("product/edit-product", async (product, thunkApi) => {
+  try {
+    const { user } = thunkApi.getState() as RootState;
+    const response = await axios.post(
+      "/admin/edit-product",
+      {
+        data: {
+          product: product,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer: ${user.token}`,
+        },
+      }
+    );
+    if (response.status !== 200) {
+      return thunkApi.rejectWithValue(response.data as ErrorPayload);
+    }
+    return response.data as SuccessMessageAddProducts;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err))
+      return thunkApi.rejectWithValue(err as AxiosError);
+
+    return thunkApi.rejectWithValue(err as ErrorPayload);
+  }
+});
+
 export const getAdminProductsFromDB = createAsyncThunk<
   Products,
   void,
@@ -77,7 +109,7 @@ interface SuccessMessage {
   message: string;
 }
 interface SuccessMessageAddProducts extends SuccessMessage {
-  products: Product;
+  product: Product;
 }
 
 export const addProductsToDB = createAsyncThunk<
@@ -168,7 +200,19 @@ export const productSlice = createSlice({
       );
       state.collections[index].items = tempArray;
     },
-    editProduct: () => {},
+    editProduct: (state, action: PayloadAction<Product>) => {
+      const index = state.collections.findIndex(
+        (category) => category.title === action.payload.title
+      );
+      const tempArray = state.collections[index].items.map((product) => {
+        if (product._id === action.payload._id) {
+          return action.payload;
+        }
+        return product;
+      });
+      state.collections[index].items = tempArray;
+      console.log(state.collections[index].items);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getProductsFromDB.fulfilled, (state, action) => {
@@ -201,7 +245,9 @@ export const getCountAllProducts = (state: RootState) => {
   return state.product.totalItems;
 };
 
-export const getProuct = (state: RootState) => {};
+// export const getAdminProduct = (state: RootState) => {
+//   const collections = state.product.collections;
+// };
 
 export const { addAllProducts, addProduct, editProduct, deleteProduct } =
   productSlice.actions;

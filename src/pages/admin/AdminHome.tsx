@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import AllProducts from "../../components/all-products/AllProducts";
 import {
   getAdminProductsFromDB,
   Products,
+  getProducts,
 } from "../../features/product/productSlice";
 
 const AdminHome = () => {
@@ -13,8 +14,9 @@ const AdminHome = () => {
     status: "",
   });
   const dispatch = useAppDispatch();
+  const products = useAppSelector(getProducts);
 
-  const getProducts = async () => {
+  const getProductsAndSet = async () => {
     const products = await dispatch(getAdminProductsFromDB()).unwrap();
 
     console.log("products", products);
@@ -25,7 +27,7 @@ const AdminHome = () => {
     });
   };
   useEffect(() => {
-    getProducts();
+    getProductsAndSet();
   }, []);
 
   return (
