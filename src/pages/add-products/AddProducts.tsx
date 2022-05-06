@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, Dispatch } from "react";
 import { ThemeProvider } from "@emotion/react";
 import TextField from "@mui/material/TextField";
@@ -17,6 +17,12 @@ import {
   addProductsToDB,
 } from "../../features/product/productSlice";
 import { MenuItem, Select } from "@mui/material";
+import Product from "../../../interfaces/product";
+import { useLocation } from "react-router-dom";
+
+interface Prop {
+  state?: Product;
+}
 
 export default function AddProducts() {
   const [title, setTitle] = useState<string>("");
@@ -27,6 +33,19 @@ export default function AddProducts() {
 
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
+  const { state } = useLocation() as Prop;
+
+  useEffect(() => {
+    if (state) {
+      if (state.description) {
+        setDescription(state.description);
+      }
+      setTitle(state.title);
+      setPrice(state.price);
+      setImageUrl(state.imageUrl);
+      setName(state.name);
+    }
+  }, []);
 
   const handleSubmit = async (event: {}) => {
     const e = event as React.FormEvent<HTMLInputElement>;
@@ -93,7 +112,7 @@ export default function AddProducts() {
       /* Convert array of arrays */
       const data = utils.sheet_to_json(ws, { header: 1 });
       try {
-        const result = await axios.post(
+        await axios.post(
           "/admin/products",
           { data, userId: user.userId },
           {
@@ -191,7 +210,7 @@ export default function AddProducts() {
               variant="contained"
               component="label"
             >
-              Add Product
+              {state ? "Edit Product" : "Add Product"}
               <input type="submit" hidden />
             </Button>
           </ThemeProvider>

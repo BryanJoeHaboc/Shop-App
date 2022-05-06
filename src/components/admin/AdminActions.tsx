@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import Product from "../../../interfaces/product";
 import { useAppDispatch } from "../../app/hooks";
 import {
@@ -13,15 +14,21 @@ type Props = {
 
 const AdminActions = (props: Props) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const handleDelete = async () => {
     const result = await dispatch(deleteProductFromDB(props.product)).unwrap();
     console.log(result);
     dispatch(deleteProduct(props.product));
   };
 
+  const handleEdit = () => {
+    navigate("/admin/addproduct", { state: props.product });
+  };
+
   return (
     <div className="admin__actions__container flex__buttons__05">
-      <ButtonWithTheme display="Edit Product" />
+      <ButtonWithTheme display="Edit Product" clickFunc={handleEdit} />
       <ButtonWithTheme
         clickFunc={handleDelete}
         display="Delete Product"
