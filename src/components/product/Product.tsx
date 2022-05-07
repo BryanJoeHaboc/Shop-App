@@ -19,13 +19,13 @@ export default function ProductComponent(props: Props) {
       <img src={imageUrl} alt="name" />
       <p>{name}</p>
       <p>${price}</p>
-      {user.userType === "user" ? (
+      {user.userType === "admin" ? (
         <div className="product_container_actions">
-          <UserActions product={props.product} />
+          <AdminActions product={props.product} />
         </div>
       ) : (
         <div className="product_container_actions">
-          <AdminActions product={props.product} />
+          <UserActions product={props.product} />
         </div>
       )}
     </div>
