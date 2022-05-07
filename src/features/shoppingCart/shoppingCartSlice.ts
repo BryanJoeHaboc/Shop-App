@@ -1,13 +1,47 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Product from "../../../interfaces/product";
 import ShoppingCart from "../../../interfaces/shoppingCart";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 import { RootState } from "../../app/store";
+import ErrorPayload from "../../../interfaces/errorPayload";
+import axios, { AxiosError } from "axios";
 
 const initialState: ShoppingCart = {
-  _id: "lol",
   items: [],
-  totalAmount: 0,
 };
+
+export const getCartFromDB = createAsyncThunk<
+  ShoppingCart,
+  void,
+  {
+    rejectValue: ErrorPayload | AxiosError;
+  }
+>("cart/getCart", async (_, thunkApi) => {
+  const { user } = thunkApi.getState() as RootState;
+
+  try {
+    const response = await axios({
+      method: "get",
+      url: "/cart",
+      headers: {
+        Authorization: `Bearer: ${user.token}`,
+      },
+    });
+
+    const error = response.data as ErrorPayload;
+
+    if (error.status !== 200) {
+      return thunkApi.rejectWithValue(error as ErrorPayload);
+    }
+
+    return response.data;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err))
+      return thunkApi.rejectWithValue(err as AxiosError);
+
+    return thunkApi.rejectWithValue(err as ErrorPayload);
+  }
+});
 
 export const shoppingCartSlice = createSlice({
   name: "shoppingCart",
@@ -56,6 +90,15 @@ export const shoppingCartSlice = createSlice({
     deleteAllItem: (state, action: PayloadAction<ShoppingItem>) => {
       state.items = [];
     },
+    addIdToCart: (state, action: PayloadAction<string>) => {
+      state._id = action.payload;
+    },
+    setCart: (state, action: PayloadAction<ShoppingCart>) => {
+      state = action.payload;
+    },
+    clearCart: (state) => {
+      state.items = [];
+    },
   },
 });
 
@@ -64,7 +107,17 @@ export const totalAmount = (state: RootState) =>
     (prev, curr) => prev + curr.quantity * curr.product.price,
     0
   );
-export const { addItem, subtractItem, deleteAllItem, deleteItem } =
-  shoppingCartSlice.actions;
+
+export const getCart = (state: RootState) => state.shoppingCart;
+
+export const {
+  addItem,
+  subtractItem,
+  deleteAllItem,
+  deleteItem,
+  addIdToCart,
+  setCart,
+  clearCart,
+} = shoppingCartSlice.actions;
 
 export default shoppingCartSlice.reducer;

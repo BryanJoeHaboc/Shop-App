@@ -11,6 +11,7 @@ import { getUser, clearUser } from "../../features/user/userSlice";
 import UserHeader from "../user/UserHeader";
 import AdminHeader from "../admin/AdminHeader";
 import "./Header.scss";
+import { clearCart } from "../../features/shoppingCart/shoppingCartSlice";
 
 export default function Header() {
   const [showCart, setShowCart] = useState(false);
@@ -20,7 +21,7 @@ export default function Header() {
 
   const handleLogout = () => {
     dispatch(clearUser());
-
+    dispatch(clearCart());
     navigate("/");
   };
 

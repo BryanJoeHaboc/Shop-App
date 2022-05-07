@@ -1,7 +1,6 @@
 import ShoppingItem from "./shoppingItem";
 
 export default interface ShoppingCart {
-  _id: string;
+  _id?: string;
   items: ShoppingItem[];
-  totalAmount: number;
 }

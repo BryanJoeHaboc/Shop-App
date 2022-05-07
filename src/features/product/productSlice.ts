@@ -4,6 +4,7 @@ import Product from "../../../interfaces/product";
 import { RootState } from "../../app/store";
 import Category from "../../../interfaces/category";
 import { LoggedInUser } from "../../../interfaces/user";
+import ErrorPayload from "../../../interfaces/errorPayload";
 
 export interface Products {
   collections: Category[];
@@ -16,12 +17,6 @@ const initialState: Products = {
   totalItems: 0,
   status: "",
 };
-
-interface ErrorPayload {
-  status: number;
-  message: string;
-  data: [] | {};
-}
 
 export const editProductFromDB = createAsyncThunk<
   SuccessMessageAddProducts,

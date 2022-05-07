@@ -63,7 +63,7 @@ const Pagination = ({ category, count, itemsPerPage }: Props) => {
         })}
       </div>
       <div>
-        {itemsPerPage && (
+        {itemsPerPage && currentItems.length && (
           <ReactPaginate
             className="pagination"
             breakLabel="..."
