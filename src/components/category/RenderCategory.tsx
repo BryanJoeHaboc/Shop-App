@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import CategoryComponent from "./Category";
 import { useAppSelector } from "../../app/hooks";
 import { getProducts } from "../../features/product/productSlice";
+import Pagination from "../pagination/Pagination";
 
 type Props = {
   category?: Category;
@@ -25,11 +26,14 @@ export default function RenderCategory({ category }: Props) {
   return (
     <>
       {categoryType ? (
-        <CategoryComponent
+        // used  for showing all items in a category
+        <Pagination
           category={singleCategory[0]}
           count={singleCategory[0].items.length}
+          itemsPerPage={4}
         />
       ) : (
+        // highlights only n+1 products in the trending page
         <CategoryComponent category={category!} count={3} />
       )}
     </>
