@@ -10,14 +10,47 @@ const initialState: ShoppingCart = {
   items: [],
 };
 
+export const deleteCartItemToDB = createAsyncThunk<
+  SuccessMessage,
+  ShoppingItem,
+  {
+    rejectValue: ErrorPayload | AxiosError;
+  }
+>("cart/delete-item", async (prod, thunkApi) => {
+  try {
+    const product = { _id: prod.product._id };
+    const { user } = thunkApi.getState() as RootState;
+    const response = await axios({
+      method: "delete",
+      url: "/cart",
+      headers: {
+        Authorization: `Bearer: ${user.token}`,
+      },
+      data: { item: product },
+    });
+
+    if (response.status !== 200) {
+      return thunkApi.rejectWithValue(response.data as ErrorPayload);
+    }
+
+    return response.data as SuccessMessage;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err))
+      return thunkApi.rejectWithValue(err as AxiosError);
+
+    return thunkApi.rejectWithValue(err as ErrorPayload);
+  }
+});
+
 export const subtractCartItemToDB = createAsyncThunk<
   SuccessMessage,
   ShoppingItem,
   {
     rejectValue: ErrorPayload | AxiosError;
   }
->("cart/subtract-product", async (product, thunkApi) => {
+>("cart/subtract-item", async (prod, thunkApi) => {
   try {
+    const product = { _id: prod.product._id };
     const { user } = thunkApi.getState() as RootState;
     const response = await axios({
       method: "post",
@@ -47,8 +80,9 @@ export const addCartItemToDB = createAsyncThunk<
   {
     rejectValue: ErrorPayload | AxiosError;
   }
->("cart/add-product", async (product, thunkApi) => {
+>("cart/add-item", async (prod, thunkApi) => {
   try {
+    const product = { _id: prod.product._id };
     const { user } = thunkApi.getState() as RootState;
     const response = await axios({
       method: "post",

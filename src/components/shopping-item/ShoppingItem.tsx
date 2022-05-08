@@ -9,10 +9,10 @@ import {
   deleteItem,
   addCartItemToDB,
   subtractCartItemToDB,
+  deleteCartItemToDB,
 } from "../../features/shoppingCart/shoppingCartSlice";
 import { theme } from "../custom-button/CustomButton";
 import "./ShoppingItem.scss";
-import { useEffect } from "react";
 
 const ShoppingItemComponent = ({
   product,
@@ -26,10 +26,6 @@ const ShoppingItemComponent = ({
       quantity: 1,
     },
   };
-
-  useEffect(() => {
-    console.log("hello nasa shopping item tayo");
-  }, []);
 
   const handleIncreaseItemQty = async (shoppingItem: ShoppingItem) => {
     const result = await dispatch(addCartItemToDB(shoppingItem)).unwrap();
@@ -48,8 +44,14 @@ const ShoppingItemComponent = ({
     }
   };
 
-  const handleDeleteItem = (shoppingItem: ShoppingItem) => {
-    dispatch(deleteItem(shoppingItem));
+  const handleDeleteItem = async (shoppingItem: ShoppingItem) => {
+    const result = await dispatch(deleteCartItemToDB(shoppingItem)).unwrap();
+
+    console.log(result);
+    if (result.message) {
+      dispatch(deleteItem(shoppingItem));
+      console.log(result);
+    }
   };
 
   return (
