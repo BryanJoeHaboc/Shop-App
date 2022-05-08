@@ -3,6 +3,7 @@ import ShoppingItem from "../../../interfaces/shoppingItem";
 import {
   addCartItemToDB,
   addItem,
+  subtractCartItemToDB,
   subtractItem,
 } from "../../features/shoppingCart/shoppingCartSlice";
 import "./ShoppingItemWindow.scss";
@@ -19,7 +20,6 @@ const ShoppingItemComponent = ({
   };
 
   const handleIncreaseItemQty = async (shoppingItem: ShoppingItem) => {
-    console.log("product", product);
     const result = await dispatch(addCartItemToDB(shoppingItem)).unwrap();
     console.log(result);
     if (result.message) {
@@ -27,8 +27,13 @@ const ShoppingItemComponent = ({
     }
   };
 
-  const handleDecreaseItemQty = (shoppingItem: ShoppingItem) => {
-    dispatch(subtractItem(shoppingItem));
+  const handleDecreaseItemQty = async (shoppingItem: ShoppingItem) => {
+    const result = await dispatch(subtractCartItemToDB(shoppingItem)).unwrap();
+    console.log(result);
+    if (result.message) {
+      dispatch(subtractItem(shoppingItem));
+      console.log(result);
+    }
   };
 
   return (

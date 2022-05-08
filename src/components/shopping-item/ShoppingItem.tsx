@@ -8,6 +8,7 @@ import {
   subtractItem,
   deleteItem,
   addCartItemToDB,
+  subtractCartItemToDB,
 } from "../../features/shoppingCart/shoppingCartSlice";
 import { theme } from "../custom-button/CustomButton";
 import "./ShoppingItem.scss";
@@ -38,8 +39,13 @@ const ShoppingItemComponent = ({
     }
   };
 
-  const handleDecreaseItemQty = (shoppingItem: ShoppingItem) => {
-    dispatch(subtractItem(shoppingItem));
+  const handleDecreaseItemQty = async (shoppingItem: ShoppingItem) => {
+    const result = await dispatch(subtractCartItemToDB(shoppingItem)).unwrap();
+    console.log(result);
+    if (result.message) {
+      dispatch(subtractItem(shoppingItem));
+      console.log(result);
+    }
   };
 
   const handleDeleteItem = (shoppingItem: ShoppingItem) => {

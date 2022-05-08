@@ -10,6 +10,37 @@ const initialState: ShoppingCart = {
   items: [],
 };
 
+export const subtractCartItemToDB = createAsyncThunk<
+  SuccessMessage,
+  ShoppingItem,
+  {
+    rejectValue: ErrorPayload | AxiosError;
+  }
+>("cart/subtract-product", async (product, thunkApi) => {
+  try {
+    const { user } = thunkApi.getState() as RootState;
+    const response = await axios({
+      method: "post",
+      url: "/subtract-cart",
+      headers: {
+        Authorization: `Bearer: ${user.token}`,
+      },
+      data: { item: product },
+    });
+
+    if (response.status !== 201) {
+      return thunkApi.rejectWithValue(response.data as ErrorPayload);
+    }
+
+    return response.data as SuccessMessage;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err))
+      return thunkApi.rejectWithValue(err as AxiosError);
+
+    return thunkApi.rejectWithValue(err as ErrorPayload);
+  }
+});
+
 export const addCartItemToDB = createAsyncThunk<
   SuccessMessage,
   ShoppingItem,
@@ -99,16 +130,17 @@ export const shoppingCartSlice = createSlice({
       const index = state.items.findIndex(
         (item) => item.product._id === action.payload.product._id
       );
-      console.log(index);
+
       if (index >= 0) {
         if (state.items[index].cartItem.quantity === 1) {
+          console.log("delete ");
           const tempItem = state.items.filter(
             (item) => item.product._id !== action.payload.product._id
           );
           state.items = tempItem;
         } else {
-          state.items[index].cartItem.quantity =
-            state.items[index].cartItem.quantity - 1;
+          console.log("sub 1");
+          state.items[index].cartItem.quantity--;
         }
       }
     },
