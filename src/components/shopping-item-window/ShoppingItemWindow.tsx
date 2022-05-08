@@ -1,6 +1,7 @@
 import { useAppDispatch } from "../../app/hooks";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 import {
+  addCartItemToDB,
   addItem,
   subtractItem,
 } from "../../features/shoppingCart/shoppingCartSlice";
@@ -9,22 +10,25 @@ import "./ShoppingItemWindow.scss";
 const ShoppingItemComponent = ({
   product,
   cartItem: { quantity },
-  _id,
 }: ShoppingItem) => {
-  const dispath = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const shoppingItem = {
-    _id,
     product,
     cartItem: { quantity: 1 },
   };
 
-  const handleIncreaseItemQty = (shoppingItem: ShoppingItem) => {
-    dispath(addItem(shoppingItem));
+  const handleIncreaseItemQty = async (shoppingItem: ShoppingItem) => {
+    console.log("product", product);
+    const result = await dispatch(addCartItemToDB(shoppingItem)).unwrap();
+    console.log(result);
+    if (result.message) {
+      dispatch(addItem(shoppingItem));
+    }
   };
 
   const handleDecreaseItemQty = (shoppingItem: ShoppingItem) => {
-    dispath(subtractItem(shoppingItem));
+    dispatch(subtractItem(shoppingItem));
   };
 
   return (

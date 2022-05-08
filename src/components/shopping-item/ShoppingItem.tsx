@@ -11,21 +11,24 @@ import {
 } from "../../features/shoppingCart/shoppingCartSlice";
 import { theme } from "../custom-button/CustomButton";
 import "./ShoppingItem.scss";
+import { useEffect } from "react";
 
 const ShoppingItemComponent = ({
   product,
   cartItem: { quantity },
-  _id,
 }: ShoppingItem) => {
   const dispatch = useAppDispatch();
 
   const shoppingItem = {
-    _id,
     product,
     cartItem: {
       quantity: 1,
     },
   };
+
+  useEffect(() => {
+    console.log("hello nasa shopping item tayo");
+  }, []);
 
   const handleIncreaseItemQty = async (shoppingItem: ShoppingItem) => {
     const result = await dispatch(addCartItemToDB(shoppingItem)).unwrap();

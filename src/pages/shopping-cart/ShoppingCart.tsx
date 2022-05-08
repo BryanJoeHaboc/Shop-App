@@ -20,7 +20,6 @@ const ShoppingCartComponent = () => {
             <ShoppingItemComponent
               key={product._id}
               product={product}
-              _id={product._id!.toString()}
               cartItem={{ quantity }}
             />
           )

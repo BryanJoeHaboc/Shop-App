@@ -16,7 +16,7 @@ export const addCartItemToDB = createAsyncThunk<
   {
     rejectValue: ErrorPayload | AxiosError;
   }
->("cart/addProduct", async (product, thunkApi) => {
+>("cart/add-product", async (product, thunkApi) => {
   try {
     const { user } = thunkApi.getState() as RootState;
     const response = await axios({
@@ -25,13 +25,13 @@ export const addCartItemToDB = createAsyncThunk<
       headers: {
         Authorization: `Bearer: ${user.token}`,
       },
-      data: { product },
+      data: { item: product },
     });
 
     if (response.status !== 201) {
       return thunkApi.rejectWithValue(response.data as ErrorPayload);
     }
-    console.log(response.data);
+
     return response.data as SuccessMessage;
   } catch (err: unknown) {
     if (axios.isAxiosError(err))
@@ -83,7 +83,7 @@ export const shoppingCartSlice = createSlice({
   reducers: {
     addItem: (state, action: PayloadAction<ShoppingItem>) => {
       const index = state.items.findIndex(
-        (item) => item._id === action.payload._id
+        (item) => item.product._id === action.payload.product._id
       );
       if (index >= 0) {
         state.items[index].cartItem.quantity =
@@ -97,13 +97,13 @@ export const shoppingCartSlice = createSlice({
     },
     subtractItem: (state, action: PayloadAction<ShoppingItem>) => {
       const index = state.items.findIndex(
-        (item) => item._id === action.payload._id
+        (item) => item.product._id === action.payload.product._id
       );
       console.log(index);
       if (index >= 0) {
         if (state.items[index].cartItem.quantity === 1) {
           const tempItem = state.items.filter(
-            (item) => item._id !== action.payload._id
+            (item) => item.product._id !== action.payload.product._id
           );
           state.items = tempItem;
         } else {
@@ -114,7 +114,7 @@ export const shoppingCartSlice = createSlice({
     },
     deleteItem: (state, action: PayloadAction<ShoppingItem>) => {
       const tempItem = state.items.filter(
-        (item) => item._id !== action.payload._id
+        (item) => item.product._id !== action.payload.product._id
       );
       state.items = tempItem;
     },
