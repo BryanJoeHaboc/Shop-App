@@ -7,21 +7,32 @@ import {
   addItem,
   subtractItem,
   deleteItem,
+  addCartItemToDB,
 } from "../../features/shoppingCart/shoppingCartSlice";
 import { theme } from "../custom-button/CustomButton";
 import "./ShoppingItem.scss";
 
-const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
+const ShoppingItemComponent = ({
+  product,
+  cartItem: { quantity },
+  _id,
+}: ShoppingItem) => {
   const dispatch = useAppDispatch();
 
   const shoppingItem = {
     _id,
     product,
-    quantity: 1,
+    cartItem: {
+      quantity: 1,
+    },
   };
 
-  const handleIncreaseItemQty = (shoppingItem: ShoppingItem) => {
-    dispatch(addItem(shoppingItem));
+  const handleIncreaseItemQty = async (shoppingItem: ShoppingItem) => {
+    const result = await dispatch(addCartItemToDB(shoppingItem)).unwrap();
+    console.log(result);
+    if (result.message) {
+      dispatch(addItem(shoppingItem));
+    }
   };
 
   const handleDecreaseItemQty = (shoppingItem: ShoppingItem) => {

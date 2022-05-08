@@ -1,24 +1,29 @@
 import "./ShoppingCartWindow.scss";
 
 import { useAppSelector } from "../../app/hooks";
-import { RootState } from "../../app/store";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 import ShoppingItemComponent from "../../components/shopping-item-window/ShoppingItemWindow";
+import { getCart } from "../../features/shoppingCart/shoppingCartSlice";
+import { useEffect } from "react";
 
 const ShoppingCartComponent = () => {
-  const shoppingCart = useAppSelector((state: RootState) => state.shoppingCart);
-
+  const shoppingCart = useAppSelector(getCart);
+  useEffect(() => {
+    console.log(shoppingCart);
+  }, []);
   return (
     <div className="shopping_cart_container">
       {shoppingCart.items.length ? (
-        shoppingCart.items.map(({ product, quantity, _id }: ShoppingItem) => (
-          <ShoppingItemComponent
-            key={_id}
-            _id={_id}
-            product={product}
-            quantity={quantity}
-          />
-        ))
+        shoppingCart.items.map(
+          ({ product, cartItem: { quantity }, _id }: ShoppingItem) => (
+            <ShoppingItemComponent
+              key={_id}
+              _id={_id}
+              product={product}
+              cartItem={{ quantity }}
+            />
+          )
+        )
       ) : (
         <h1>No Items!</h1>
       )}

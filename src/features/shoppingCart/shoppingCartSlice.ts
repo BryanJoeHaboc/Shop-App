@@ -1,14 +1,45 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import Product from "../../../interfaces/product";
 import ShoppingCart from "../../../interfaces/shoppingCart";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 import { RootState } from "../../app/store";
 import ErrorPayload from "../../../interfaces/errorPayload";
 import axios, { AxiosError } from "axios";
+import { SuccessMessage } from "../../../interfaces/successMessage";
 
 const initialState: ShoppingCart = {
   items: [],
 };
+
+export const addCartItemToDB = createAsyncThunk<
+  SuccessMessage,
+  ShoppingItem,
+  {
+    rejectValue: ErrorPayload | AxiosError;
+  }
+>("cart/addProduct", async (product, thunkApi) => {
+  try {
+    const { user } = thunkApi.getState() as RootState;
+    const response = await axios({
+      method: "post",
+      url: "/cart",
+      headers: {
+        Authorization: `Bearer: ${user.token}`,
+      },
+      data: { product },
+    });
+
+    if (response.status !== 201) {
+      return thunkApi.rejectWithValue(response.data as ErrorPayload);
+    }
+    console.log(response.data);
+    return response.data as SuccessMessage;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err))
+      return thunkApi.rejectWithValue(err as AxiosError);
+
+    return thunkApi.rejectWithValue(err as ErrorPayload);
+  }
+});
 
 export const getCartFromDB = createAsyncThunk<
   ShoppingCart,
@@ -17,9 +48,9 @@ export const getCartFromDB = createAsyncThunk<
     rejectValue: ErrorPayload | AxiosError;
   }
 >("cart/getCart", async (_, thunkApi) => {
-  const { user } = thunkApi.getState() as RootState;
-
   try {
+    const { user } = thunkApi.getState() as RootState;
+
     const response = await axios({
       method: "get",
       url: "/cart",
@@ -28,13 +59,11 @@ export const getCartFromDB = createAsyncThunk<
       },
     });
 
-    const error = response.data as ErrorPayload;
-
-    if (error.status !== 200) {
-      return thunkApi.rejectWithValue(error as ErrorPayload);
+    if (response.status !== 200) {
+      return thunkApi.rejectWithValue(response.data as ErrorPayload);
     }
 
-    return response.data;
+    return response.data as ShoppingCart;
   } catch (err: unknown) {
     if (axios.isAxiosError(err))
       return thunkApi.rejectWithValue(err as AxiosError);
@@ -57,11 +86,12 @@ export const shoppingCartSlice = createSlice({
         (item) => item._id === action.payload._id
       );
       if (index >= 0) {
-        state.items[index].quantity = state.items[index].quantity + 1;
+        state.items[index].cartItem.quantity =
+          state.items[index].cartItem.quantity + 1;
       } else {
         state.items.push({
           ...action.payload,
-          quantity: 1,
+          cartItem: { quantity: 1 },
         });
       }
     },
@@ -71,13 +101,14 @@ export const shoppingCartSlice = createSlice({
       );
       console.log(index);
       if (index >= 0) {
-        if (state.items[index].quantity === 1) {
+        if (state.items[index].cartItem.quantity === 1) {
           const tempItem = state.items.filter(
             (item) => item._id !== action.payload._id
           );
           state.items = tempItem;
         } else {
-          state.items[index].quantity = state.items[index].quantity - 1;
+          state.items[index].cartItem.quantity =
+            state.items[index].cartItem.quantity - 1;
         }
       }
     },
@@ -93,8 +124,20 @@ export const shoppingCartSlice = createSlice({
     addIdToCart: (state, action: PayloadAction<string>) => {
       state._id = action.payload;
     },
-    setCart: (state, action: PayloadAction<ShoppingCart>) => {
-      state = action.payload;
+    setCart: (state, action) => {
+      state.items = action.payload.items.map((product: any) => {
+        return {
+          cartItem: product.cartItem,
+          product: {
+            description: product.description,
+            _id: product._id,
+            imageUrl: product.imageUrl,
+            price: product.price,
+            title: product.title,
+            name: product.name,
+          },
+        };
+      });
     },
     clearCart: (state) => {
       state.items = [];
@@ -104,7 +147,7 @@ export const shoppingCartSlice = createSlice({
 
 export const totalAmount = (state: RootState) =>
   state.shoppingCart.items.reduce(
-    (prev, curr) => prev + curr.quantity * curr.product.price,
+    (prev, curr) => prev + curr.cartItem.quantity * curr.product.price,
     0
   );
 

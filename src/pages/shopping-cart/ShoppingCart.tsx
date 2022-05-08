@@ -15,14 +15,16 @@ const ShoppingCartComponent = () => {
   return (
     <div className="shopping_cart_page_container">
       {shoppingCart.items.length ? (
-        shoppingCart.items.map(({ product, quantity, _id }: ShoppingItem) => (
-          <ShoppingItemComponent
-            key={_id}
-            _id={_id}
-            product={product}
-            quantity={quantity}
-          />
-        ))
+        shoppingCart.items.map(
+          ({ product, cartItem: { quantity } }: ShoppingItem) => (
+            <ShoppingItemComponent
+              key={product._id}
+              product={product}
+              _id={product._id!.toString()}
+              cartItem={{ quantity }}
+            />
+          )
+        )
       ) : (
         <h1>No Items!</h1>
       )}

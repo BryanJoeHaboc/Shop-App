@@ -5,6 +5,10 @@ import { RootState } from "../../app/store";
 import Category from "../../../interfaces/category";
 import { LoggedInUser } from "../../../interfaces/user";
 import ErrorPayload from "../../../interfaces/errorPayload";
+import {
+  SuccessMessage,
+  SuccessMessageAddProducts,
+} from "../../../interfaces/successMessage";
 
 export interface Products {
   collections: Category[];
@@ -99,13 +103,6 @@ export const getProductsFromDB = createAsyncThunk<
     return thunkApi.rejectWithValue(err as ErrorPayload);
   }
 });
-
-interface SuccessMessage {
-  message: string;
-}
-interface SuccessMessageAddProducts extends SuccessMessage {
-  product: Product;
-}
 
 export const addProductsToDB = createAsyncThunk<
   SuccessMessageAddProducts,

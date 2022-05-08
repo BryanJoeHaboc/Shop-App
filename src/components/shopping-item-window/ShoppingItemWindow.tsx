@@ -6,13 +6,17 @@ import {
 } from "../../features/shoppingCart/shoppingCartSlice";
 import "./ShoppingItemWindow.scss";
 
-const ShoppingItemComponent = ({ product, quantity, _id }: ShoppingItem) => {
+const ShoppingItemComponent = ({
+  product,
+  cartItem: { quantity },
+  _id,
+}: ShoppingItem) => {
   const dispath = useAppDispatch();
 
   const shoppingItem = {
     _id,
     product,
-    quantity: 1,
+    cartItem: { quantity: 1 },
   };
 
   const handleIncreaseItemQty = (shoppingItem: ShoppingItem) => {

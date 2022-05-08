@@ -1,7 +1,10 @@
 import ButtonWithTheme from "../custom-button/ButtonWithTheme";
 import { useAppDispatch } from "../../app/hooks";
 import ProductInterface from "../../../interfaces/product";
-import { addItem } from "../../features/shoppingCart/shoppingCartSlice";
+import {
+  addCartItemToDB,
+  addItem,
+} from "../../features/shoppingCart/shoppingCartSlice";
 
 type Props = {
   product: ProductInterface;
@@ -9,14 +12,21 @@ type Props = {
 
 const UserActions = (props: Props) => {
   const dispatch = useAppDispatch();
-  const handleAddItemToCart = () => {
+
+  const handleAddItemToCart = async () => {
     const shoppingItem = {
       _id: props.product._id!.toString(),
       product: props.product,
-      quantity: 1,
+      cartItem: {
+        quantity: 1,
+      },
     };
 
-    dispatch(addItem(shoppingItem));
+    const result = await dispatch(addCartItemToDB(shoppingItem)).unwrap();
+    console.log(result);
+    if (result.message) {
+      dispatch(addItem(shoppingItem));
+    }
   };
 
   return (
