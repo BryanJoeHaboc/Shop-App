@@ -1,6 +1,3 @@
-import Button from "@mui/material/Button";
-import { ThemeProvider } from "@mui/material/styles";
-
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import ShoppingItem from "../../../interfaces/shoppingItem";
@@ -10,7 +7,7 @@ import {
   clearCart,
   totalAmount,
 } from "../../features/shoppingCart/shoppingCartSlice";
-import { theme } from "../../components/custom-button/CustomButton";
+
 import "./ShoppingCart.scss";
 import ButtonWithTheme from "../../components/custom-button/ButtonWithTheme";
 

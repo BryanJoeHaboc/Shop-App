@@ -19,6 +19,7 @@ import {
   getProductsFromDB,
 } from "./features/product/productSlice";
 import AdminHome from "./pages/admin/AdminHome";
+import Orders from "./pages/orders/Orders";
 
 function App() {
   const user = useAppSelector(getUser);
@@ -60,6 +61,7 @@ function App() {
             />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<LoginPage />} />
+            <Route path="orders" element={<Orders />} />
             <Route path="admin">
               <Route
                 index

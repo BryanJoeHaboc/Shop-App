@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Product from "../../../interfaces/product";
 import { useAppDispatch } from "../../app/hooks";
