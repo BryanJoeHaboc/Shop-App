@@ -1,0 +1,30 @@
+.order__invoices {
+  display: flex;
+  margin-left: 6rem;
+  margin-bottom: 5rem;
+  padding: 0;
+
+  .order__invoices__body {
+    .order__invoices__body__actions {
+      display: flex;
+      gap: 1rem;
+      text-align: left;
+
+      .order__invoices__body__actions__button {
+        margin-top: 1.7rem;
+      }
+    }
+
+    .order__invoices__body__products {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+
+      & img {
+        height: 300px;
+        width: 200px;
+      }
+    }
+  }
+}
