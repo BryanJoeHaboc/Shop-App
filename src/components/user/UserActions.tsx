@@ -4,6 +4,8 @@ import ProductInterface from "../../../interfaces/product";
 import {
   addCartItemToDB,
   addItem,
+  checkOutItems,
+  clearCart,
 } from "../../features/shoppingCart/shoppingCartSlice";
 
 type Props = {
@@ -29,6 +31,14 @@ const UserActions = (props: Props) => {
     }
   };
 
+  const handleCheckoutItems = async () => {
+    const result = await dispatch(checkOutItems()).unwrap();
+
+    if (result.message) {
+      dispatch(clearCart());
+    }
+  };
+
   return (
     <div className="flex__buttons__2">
       {/* <Button
@@ -44,7 +54,7 @@ const UserActions = (props: Props) => {
             Checkout
           </Button> */}
       <ButtonWithTheme display="Add To Cart" clickFunc={handleAddItemToCart} />
-      <ButtonWithTheme display="Checkout" />
+      <ButtonWithTheme display="Checkout" clickFunc={handleCheckoutItems} />
     </div>
   );
 };

@@ -10,6 +10,36 @@ const initialState: ShoppingCart = {
   items: [],
 };
 
+export const checkOutItems = createAsyncThunk<
+  SuccessMessage,
+  void,
+  {
+    rejectValue: ErrorPayload | AxiosError;
+  }
+>("cart/checkout", async (_, thunkApi) => {
+  try {
+    const { user } = thunkApi.getState() as RootState;
+    const response = await axios({
+      method: "post",
+      url: "/checkout/success",
+      headers: {
+        Authorization: `Bearer: ${user.token}`,
+      },
+    });
+
+    if (response.status !== 200) {
+      return thunkApi.rejectWithValue(response.data as ErrorPayload);
+    }
+
+    return response.data as SuccessMessage;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err))
+      return thunkApi.rejectWithValue(err as AxiosError);
+
+    return thunkApi.rejectWithValue(err as ErrorPayload);
+  }
+});
+
 export const deleteCartItemToDB = createAsyncThunk<
   SuccessMessage,
   ShoppingItem,

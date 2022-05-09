@@ -1,17 +1,32 @@
 import Button from "@mui/material/Button";
 import { ThemeProvider } from "@mui/material/styles";
 
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 import ShoppingItemComponent from "../../components/shopping-item/ShoppingItem";
-import { totalAmount } from "../../features/shoppingCart/shoppingCartSlice";
+import {
+  checkOutItems,
+  clearCart,
+  totalAmount,
+} from "../../features/shoppingCart/shoppingCartSlice";
 import { theme } from "../../components/custom-button/CustomButton";
 import "./ShoppingCart.scss";
+import ButtonWithTheme from "../../components/custom-button/ButtonWithTheme";
 
 const ShoppingCartComponent = () => {
   const shoppingCart = useAppSelector((state: RootState) => state.shoppingCart);
   const total = useAppSelector(totalAmount);
+  const dispatch = useAppDispatch();
+
+  const handleCheckoutItems = async () => {
+    const result = await dispatch(checkOutItems()).unwrap();
+
+    if (result.message) {
+      dispatch(clearCart());
+    }
+  };
+
   return (
     <div className="shopping_cart_page_container">
       {shoppingCart.items.length ? (
@@ -28,11 +43,11 @@ const ShoppingCartComponent = () => {
         <h1>No Items!</h1>
       )}
       <div className="button-flex">
-        <ThemeProvider theme={theme}>
-          <Button onClick={() => {}} color="darkApple" variant="contained">
-            Checkout
-          </Button>
-        </ThemeProvider>
+        <ButtonWithTheme
+          display="Checkout"
+          color="darkApple"
+          clickFunc={handleCheckoutItems}
+        />
         <h1>Total: ${total}</h1>
       </div>
     </div>
