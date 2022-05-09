@@ -19,7 +19,9 @@ const AdminActions = (props: Props) => {
   const handleDelete = async () => {
     const result = await dispatch(deleteProductFromDB(props.product)).unwrap();
     console.log(result);
-    dispatch(deleteProduct(props.product));
+    if (result.message) {
+      dispatch(deleteProduct(props.product));
+    }
   };
 
   const handleEdit = () => {

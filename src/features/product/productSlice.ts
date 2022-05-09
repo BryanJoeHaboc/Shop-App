@@ -179,18 +179,43 @@ export const productSlice = createSlice({
       const index = state.collections.findIndex(
         (category) => category.title === action.payload.title
       );
-      const item = action.payload as Product;
-      console.log(item);
-      state.collections[index].items.push(item);
+
+      if (index < 0) {
+        state.collections.push({
+          _id: state.collections.length + 1,
+          title: action.payload.title,
+          routeName:
+            action.payload.title.charAt(0).toUpperCase() +
+            action.payload.title.slice(1),
+          items: [],
+        });
+
+        state.collections[state.collections.length + 1].items.push(
+          action.payload
+        );
+      } else {
+        const item = action.payload as Product;
+        console.log(item);
+        state.collections[index].items.push(item);
+      }
     },
     deleteProduct: (state, action: PayloadAction<Product>) => {
       const index = state.collections.findIndex(
         (category) => category.title === action.payload.title
       );
-      const tempArray = state.collections[index].items.filter(
+
+      const collections = state.collections[index];
+
+      const tempArray: Product[] = state.collections[index].items.filter(
         (product) => product._id !== action.payload._id
       );
-      state.collections[index].items = tempArray;
+
+      state.collections[index] = {
+        _id: collections._id,
+        routeName: collections.routeName,
+        title: collections.title,
+        items: tempArray,
+      };
     },
     editProduct: (state, action: PayloadAction<Product>) => {
       const index = state.collections.findIndex(
@@ -203,7 +228,6 @@ export const productSlice = createSlice({
         return product;
       });
       state.collections[index].items = tempArray;
-      console.log(state.collections[index].items);
     },
   },
   extraReducers: (builder) => {
