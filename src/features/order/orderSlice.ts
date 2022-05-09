@@ -6,14 +6,19 @@ import { Orders } from "../../../interfaces/order";
 
 const initialState: Orders = {
   _id: 0,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: "05-09-2022",
+  updatedAt: "05-09-2022",
   userId: 0,
   products: [],
 };
 
+// export const getInvoice = createAsyncThunk<>(
+//   "order/get-invoice",
+//   async (_, thunkApi) => {}
+// );
+
 export const getOrdersFromDB = createAsyncThunk<
-  Orders,
+  { orders: Orders[] },
   void,
   { rejectValue: ErrorPayload | AxiosError }
 >("order/get-orders", async (_, thunkApi) => {
