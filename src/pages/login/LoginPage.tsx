@@ -4,17 +4,21 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import isEmail from "validator/lib/isEmail";
+import isLength from "validator/lib/isLength";
 
 import { User } from "../../../interfaces/user";
 import { theme } from "../../components/custom-button/CustomButton";
 import "../signup/SignUp.scss";
 import { useAppDispatch } from "../../app/hooks";
 import { setUser } from "../../features/user/userSlice";
+import { ErrorWithSet } from "../../../interfaces/error";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const dispatch = useAppDispatch();
 
   // for update: event: React.ChangeEvent for submit: event: React.FormEvent for click: event: React.MouseEvent
@@ -38,17 +42,15 @@ export default function LoginPage() {
 
     try {
       // need validation
-
       const user: User = {
         email,
         password,
       };
-      const fetchedUser: fetchedUser = await axios.post("/login", user);
+      const response = await axios.post("/login", user);
 
-      // NOTE: diff errors
-      if (!fetchedUser) {
-        throw Error("Error in Logging In!");
-      }
+      const fetchedUser: fetchedUser = response.data;
+
+      console.log(fetchedUser);
 
       const userType = fetchedUser.data.user.userType;
 
@@ -67,18 +69,22 @@ export default function LoginPage() {
       } else if (userType === "admin") {
         navigate("/admin");
       }
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      setError("Invalid username or password");
     }
   };
+
   const handleChange = (setter: Dispatch<string>, event: {}) => {
+    setError("");
     const e = event as React.ChangeEvent<HTMLInputElement>;
+
     setter(e.target.value);
   };
 
   return (
     <div className="login_page_container">
       <h1>Shopper</h1>
+      <h3 className="error">{error}</h3>
       <form
         className="login_page_form_container"
         onSubmit={(e) => handleSubmit(e)}
@@ -92,6 +98,12 @@ export default function LoginPage() {
             label="Email"
             variant="standard"
             fullWidth
+            error={!!email && !isEmail(email)}
+            helperText={
+              !!email && !isEmail(email)
+                ? "Invalid email address, please try again"
+                : ""
+            }
           />
         </div>
         <div>
@@ -103,6 +115,12 @@ export default function LoginPage() {
             label="Password"
             variant="standard"
             fullWidth
+            error={!!password.length && !isLength(password, { min: 6 })}
+            helperText={
+              !!password.length && !isLength(password, { min: 6 })
+                ? "Password must require minimum length of six characters"
+                : ""
+            }
           />
         </div>
         <div>
@@ -113,6 +131,7 @@ export default function LoginPage() {
               color="steelBlue"
               variant="contained"
               type="submit"
+              disabled={!isLength(password, { min: 6 }) || !isEmail(email)}
             >
               Login{" "}
             </Button>

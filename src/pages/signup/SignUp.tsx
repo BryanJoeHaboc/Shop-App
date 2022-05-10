@@ -3,6 +3,9 @@ import { ThemeProvider } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
+import isEmail from "validator/lib/isEmail";
+import isLength from "validator/lib/isLength";
+import isAlphanumeric from "validator/lib/isAlphanumeric";
 
 import { SignUpUser } from "../../../interfaces/user";
 import { theme } from "../../components/custom-button/CustomButton";
@@ -65,10 +68,16 @@ export default function SignUp() {
             type="text"
             value={firstName}
             onChange={(event) => handleChange(setFirstName, event)}
-            id="standard-basic"
+            id="firstName"
             label="First Name"
             variant="standard"
             fullWidth
+            error={!!firstName && !isAlphanumeric(firstName)}
+            helperText={
+              !!firstName && !isAlphanumeric(firstName)
+                ? "First Name must only contain alphanumeric characters "
+                : ""
+            }
           />
         </div>
         <div>
@@ -76,10 +85,16 @@ export default function SignUp() {
             type="text"
             value={lastName}
             onChange={(event) => handleChange(setLastName, event)}
-            id="standard-basic"
+            id="lastName"
             label="Last Name"
             variant="standard"
             fullWidth
+            error={!!lastName && !isAlphanumeric(lastName)}
+            helperText={
+              !!lastName && !isAlphanumeric(lastName)
+                ? "Last Name must only contain alphanumeric characters "
+                : ""
+            }
           />
         </div>
         <div>
@@ -87,10 +102,16 @@ export default function SignUp() {
             type="text"
             value={email}
             onChange={(event) => handleChange(setEmail, event)}
-            id="standard-basic"
+            id="email"
             label="Email"
             variant="standard"
             fullWidth
+            error={!!email && !isEmail(email)}
+            helperText={
+              !!email && !isEmail(email)
+                ? "Invalid email address, please try again"
+                : ""
+            }
           />
         </div>
         <div>
@@ -98,10 +119,16 @@ export default function SignUp() {
             type="password"
             value={password}
             onChange={(event) => handleChange(setPassword, event)}
-            id="standard-basic"
+            id="password"
             label="Password"
             variant="standard"
             fullWidth
+            error={!!password.length && !isLength(password, { min: 6 })}
+            helperText={
+              !!password.length && !isLength(password, { min: 6 })
+                ? "Password must require minimum length of six characters"
+                : ""
+            }
           />
         </div>
         <div>
@@ -109,10 +136,18 @@ export default function SignUp() {
             type="password"
             value={confirmPassword}
             onChange={(event) => handleChange(setConfirmPassword, event)}
-            id="standard-basic"
+            id="password-confirm"
             label="Confirm Password"
             variant="standard"
             fullWidth
+            error={
+              !!confirmPassword.length && !isLength(confirmPassword, { min: 6 })
+            }
+            helperText={
+              !!confirmPassword.length && !isLength(confirmPassword, { min: 6 })
+                ? "Password must require minimum length of six characters"
+                : ""
+            }
           />
         </div>
         <div>
@@ -123,6 +158,13 @@ export default function SignUp() {
               color="steelBlue"
               variant="contained"
               type="submit"
+              disabled={
+                !firstName ||
+                !lastName ||
+                !email ||
+                !password ||
+                !confirmPassword
+              }
             >
               Sign Up{" "}
             </Button>
