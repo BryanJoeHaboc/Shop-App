@@ -18,6 +18,7 @@ export default function SignUp() {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
 
@@ -40,15 +41,18 @@ export default function SignUp() {
         userType: "user",
       };
       const result = await axios.post("/signup", user);
-
       // NOTE: diff errors
       if (!result) {
         throw Error("Error in creating User!");
       }
 
       navigate("/login");
-    } catch (e) {
-      console.log(e);
+    } catch (e: any) {
+      if (e.response.data.data.errors.length) {
+        setError(e.response.data.data.errors[0].msg);
+      } else {
+        setError("Something went wrong, please try again");
+      }
     }
   };
   const handleChange = (setter: Dispatch<string>, event: {}) => {
@@ -59,6 +63,7 @@ export default function SignUp() {
   return (
     <div className="login_page_container">
       <h1>Shopper</h1>
+      <h3 className="error">{error}</h3>
       <form
         className="login_page_form_container"
         onSubmit={(e) => handleSubmit(e)}
