@@ -46,11 +46,8 @@ export default function LoginPage() {
         email,
         password,
       };
-      const response = await axios.post("/login", user);
 
-      const fetchedUser: fetchedUser = response.data;
-
-      console.log(fetchedUser);
+      const fetchedUser: fetchedUser = await axios.post("/login", user);
 
       const userType = fetchedUser.data.user.userType;
 
@@ -69,7 +66,10 @@ export default function LoginPage() {
       } else if (userType === "admin") {
         navigate("/admin");
       }
+
+      console.log("hatdog");
     } catch (e: any) {
+      console.log(e);
       setError("Invalid username or password");
     }
   };
