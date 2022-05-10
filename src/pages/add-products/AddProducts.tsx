@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import { read, utils } from "xlsx";
 import axios from "axios";
 import { InputLabel } from "@material-ui/core";
+import isNumeric from "validator/lib/isNumeric";
 
 import { theme } from "../../components/custom-button/CustomButton";
 import "../signup/SignUp.scss";
@@ -21,6 +22,7 @@ import {
 import { MenuItem, Select } from "@mui/material";
 import Product from "../../../interfaces/product";
 import { useLocation, useNavigate } from "react-router-dom";
+import isLength from "validator/lib/isLength";
 
 interface Prop {
   state?: Product;
@@ -179,6 +181,12 @@ export default function AddProducts() {
             label="Name"
             variant="standard"
             fullWidth
+            error={!!name && isLength(name, { min: 3 })}
+            helperText={
+              !!name && isLength(name, { min: 3 })
+                ? "Product Name must be atleast three characters long  "
+                : ""
+            }
           />
         </div>
         <div>
@@ -190,8 +198,15 @@ export default function AddProducts() {
             label="Description"
             variant="standard"
             fullWidth
+            error={!!description && isLength(description, { min: 3 })}
+            helperText={
+              !!description && isLength(description, { min: 3 })
+                ? "Product Description must be atleast three characters long  "
+                : ""
+            }
           />
         </div>
+        2
         <div>
           <TextField
             type="number"
@@ -202,6 +217,12 @@ export default function AddProducts() {
             label="Price"
             variant="standard"
             fullWidth
+            error={!!price && isNumeric(price.toString())}
+            helperText={
+              !!price && isNumeric(price.toString())
+                ? "Input must be a number"
+                : ""
+            }
           />
         </div>
         <div>
