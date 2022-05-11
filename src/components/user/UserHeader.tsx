@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../../app/hooks";
+import { getUser } from "../../features/user/userSlice";
 
 const UserHeader = () => {
+  const user = useAppSelector(getUser);
   return (
     <nav className="header_links">
-      <Link to="/orders">Orders</Link>
+      {user.token && <Link to="/orders">Orders</Link>}
       <Link to="/products">All Products</Link>
       <Link to="/products/womens">Womens</Link>
       <Link to="/products/mens">Mens</Link>

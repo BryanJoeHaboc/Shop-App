@@ -61,7 +61,14 @@ function App() {
             />
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<LoginPage />} />
-            <Route path="orders" element={<Orders />} />
+            <Route
+              path="orders"
+              element={
+                <ProtectedRoute user={user}>
+                  <Orders />
+                </ProtectedRoute>
+              }
+            />
             <Route path="admin">
               <Route
                 index

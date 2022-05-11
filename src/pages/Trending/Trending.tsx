@@ -9,20 +9,23 @@ import {
   getCartFromDB,
   setCart,
 } from "../../features/shoppingCart/shoppingCartSlice";
+import { getUser } from "../../features/user/userSlice";
 
 export default function Trending() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const allProducts = useAppSelector(getProducts);
+  const user = useAppSelector(getUser);
 
   const getCartFromDataBase = async () => {
-    const result = await dispatch(getCartFromDB()).unwrap();
+    if (user.token) {
+      const result = await dispatch(getCartFromDB()).unwrap();
 
-    if (result.items.length !== 0) {
-      dispatch(setCart(result));
+      if (result.items.length !== 0) {
+        dispatch(setCart(result));
+      }
     }
     setIsLoading(false);
-    console.log("hatdogigigigigdig");
   };
 
   useEffect(() => {
