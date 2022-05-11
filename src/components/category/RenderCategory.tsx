@@ -1,28 +1,30 @@
 import Category from "../../../interfaces/category";
 import "./Category.scss";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 // import data from "../../data/data";
-import { useAppSelector } from "../../app/hooks";
-import { getProducts } from "../../features/product/productSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getCollection } from "../../features/product/productSlice";
 import Pagination from "../pagination/Pagination";
 import { useEffect, useState } from "react";
 import Loading from "../misc/Loading";
 
 export default function RenderCategory() {
   const { categoryType } = useParams();
-  const [singleCategory, setSingleCategory] = useState<Category[]>([]);
+  const [singleCategory, setSingleCategory] = useState<Category>({
+    _id: 0,
+    title: "",
+    routeName: "",
+    items: [],
+  });
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { collections } = useAppSelector(getProducts);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     if (categoryType) {
-      setSingleCategory(
-        collections.filter(
-          (category) => category.title.toLowerCase() === categoryType
-        )
-      );
+      const collection = dispatch(getCollection(categoryType));
+      setSingleCategory(collection);
       setIsLoading(false);
     }
-  }, [categoryType, collections]);
+  }, [categoryType]);
 
   return (
     <>
@@ -31,8 +33,8 @@ export default function RenderCategory() {
       ) : (
         // used  for showing all items in a category
         <Pagination
-          category={singleCategory[0]}
-          count={singleCategory[0].items.length}
+          category={singleCategory}
+          count={singleCategory.items.length}
           itemsPerPage={4}
         />
       )}

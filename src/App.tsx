@@ -15,6 +15,7 @@ import AddProducts from "./pages/add-products/AddProducts";
 import { useEffect } from "react";
 import {
   addAllProducts,
+  addCategories,
   getProducts,
   getProductsFromDB,
 } from "./features/product/productSlice";
@@ -27,10 +28,21 @@ function App() {
   const allProducts = useAppSelector(getProducts);
 
   const getProductsOnFirstLoad = async () => {
-    if (!allProducts.collections.length) {
+    if (!allProducts.length) {
       const result = await dispatch(getProductsFromDB()).unwrap();
-      dispatch(addAllProducts(result));
+      dispatch(addAllProducts(result.rows));
       console.log("first render!");
+      console.log(result);
+      const categories: string[] = [];
+      result.rows.forEach((prod) => {
+        const index = categories.findIndex((title) => title === prod.title);
+
+        if (index < 0) {
+          categories.push(prod.title);
+        }
+      });
+      console.log("categories", categories);
+      dispatch(addCategories(categories));
     }
   };
 

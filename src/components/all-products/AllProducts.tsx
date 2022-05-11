@@ -1,18 +1,23 @@
-import { Products } from "../../features/product/productSlice";
-import RenderCategory from "../../components/category/RenderCategory";
+import { getCategories, Products } from "../../features/product/productSlice";
 import Category from "../../../interfaces/category";
 import CategoryComponent from "../category/Category";
+import { useAppSelector } from "../../app/hooks";
+import { useEffect, useState } from "react";
 
-type Props = {
-  allProducts: Products;
-};
+const AllProducts = () => {
+  const cat = useAppSelector(getCategories);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [idCounter, setIdCounter] = useState(0);
 
-const AllProducts = ({ allProducts }: Props) => {
+  useEffect(() => {
+    setCategories(cat);
+    console.log("nasa all products ako");
+  }, []);
   return (
     <div className="all__products__container">
-      {allProducts.collections.map((category: Category) => {
+      {categories.map((category: string) => {
         return (
-          <CategoryComponent category={category} key={category._id} count={3} />
+          <CategoryComponent category={category} key={idCounter} count={3} />
         );
       })}{" "}
     </div>

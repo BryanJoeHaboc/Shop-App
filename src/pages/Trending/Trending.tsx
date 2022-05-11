@@ -31,7 +31,5 @@ export default function Trending() {
   useEffect(() => {
     getCartFromDataBase();
   }, []);
-  return (
-    <>{isLoading ? <Loading /> : <AllProducts allProducts={allProducts} />} </>
-  );
+  return <>{isLoading ? <Loading /> : <AllProducts />} </>;
 }

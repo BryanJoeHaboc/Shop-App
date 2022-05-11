@@ -11,16 +11,49 @@ import {
 } from "../../../interfaces/successMessage";
 
 export interface Products {
-  collections: Category[];
+  items: Product[];
   totalItems: number;
-  status: "loading" | "success" | "failed" | "";
+  categories: string[];
 }
 
 const initialState: Products = {
-  collections: [],
+  items: [],
   totalItems: 0,
-  status: "",
+  categories: [],
 };
+
+export const getCollection = (category: string) => {
+  return (_: any, getState: () => RootState): Category => {
+    const { product } = getState() as RootState;
+
+    const collection = product.items.filter(
+      (prod) => prod.title.toLowerCase() === category.toLowerCase()
+    );
+
+    return {
+      _id: product.categories.findIndex((cat) => cat === category),
+      items: collection,
+      routeName: category,
+      title: category.charAt(0).toUpperCase() + category.slice(1),
+    } as Category;
+  };
+};
+
+// export const getCollection = createAsyncThunk<Category, string>(
+//   "product/get-collection",
+//   async (category, thunkApi) => {
+//     const { product } = thunkApi.getState() as RootState;
+
+//     const collection = product.items.filter(
+//       (prod) => prod.title.toLowerCase() === category
+//     );
+//     return {
+//       items: collection,
+//       routeName: category,
+//       title: category.charAt(0) + category.slice(1),
+//     } as Category;
+//   }
+// );
 
 export const editProductFromDB = createAsyncThunk<
   SuccessMessageAddProducts,
@@ -55,7 +88,7 @@ export const editProductFromDB = createAsyncThunk<
 });
 
 export const getAdminProductsFromDB = createAsyncThunk<
-  Products,
+  { rows: Product[]; count: number },
   void,
   {
     rejectValue: ErrorPayload | AxiosError;
@@ -72,7 +105,7 @@ export const getAdminProductsFromDB = createAsyncThunk<
     if (response.status === 404) {
       return thunkApi.rejectWithValue(response.data as ErrorPayload);
     }
-    return response.data as Products;
+    return response.data as { rows: Product[]; count: number };
   } catch (err: unknown) {
     if (axios.isAxiosError(err))
       return thunkApi.rejectWithValue(err as AxiosError);
@@ -83,7 +116,7 @@ export const getAdminProductsFromDB = createAsyncThunk<
 
 export const getProductsFromDB = createAsyncThunk<
   // Return type of the payload creator
-  Products,
+  { rows: Product[]; count: number },
   // First argument to the payload creator
   void,
   {
@@ -95,7 +128,8 @@ export const getProductsFromDB = createAsyncThunk<
     if (response.status === 404) {
       return thunkApi.rejectWithValue(response.data as ErrorPayload);
     }
-    return response.data as Products;
+
+    return response.data as { rows: Product[]; count: number };
   } catch (err: unknown) {
     if (axios.isAxiosError(err))
       return thunkApi.rejectWithValue(err as AxiosError);
@@ -171,101 +205,144 @@ export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    addAllProducts: (state, action: PayloadAction<Products>) => {
-      state.collections = action.payload.collections;
-      state.totalItems = action.payload.totalItems;
+    addAllProducts: (state, action: PayloadAction<Product[]>) => {
+      // state.collections = action.payload.collections;
+      // state.totalItems = action.payload.totalItems;
+      state.items = action.payload;
     },
-    addProduct: (state, action) => {
-      const index = state.collections.findIndex(
-        (category) => category.title === action.payload.title
+    addProduct: (state, action: PayloadAction<Product>) => {
+      // const index = state.collections.findIndex(
+      //   (category) => category.title === action.payload.title
+      // );
+      // if (index < 0) {
+      //   state.collections.push({
+      //     _id: state.collections.length + 1,
+      //     title: action.payload.title,
+      //     routeName:
+      //       action.payload.title.charAt(0).toUpperCase() +
+      //       action.payload.title.slice(1),
+      //     items: [],
+      //   });
+      //   state.collections[state.collections.length + 1].items.push(
+      //     action.payload
+      //   );
+      // } else {
+      //   const item = action.payload as Product;
+      //   console.log(item);
+      //   state.collections[index].items.push(item);
+      // }
+      state.items.push(action.payload);
+
+      const index = state.categories.findIndex(
+        (cat) => cat === action.payload.title.toLowerCase()
       );
 
       if (index < 0) {
-        state.collections.push({
-          _id: state.collections.length + 1,
-          title: action.payload.title,
-          routeName:
-            action.payload.title.charAt(0).toUpperCase() +
-            action.payload.title.slice(1),
-          items: [],
-        });
-
-        state.collections[state.collections.length + 1].items.push(
-          action.payload
-        );
-      } else {
-        const item = action.payload as Product;
-        console.log(item);
-        state.collections[index].items.push(item);
+        state.categories.push(action.payload.title.toLowerCase());
       }
     },
     deleteProduct: (state, action: PayloadAction<Product>) => {
-      const index = state.collections.findIndex(
-        (category) => category.title === action.payload.title
-      );
+      // const index = state.collections.findIndex(
+      //   (category) => category.title === action.payload.title
+      // );
 
-      const collections = state.collections[index];
+      // const collections = state.collections[index];
 
-      const tempArray: Product[] = state.collections[index].items.filter(
+      // const tempArray: Product[] = state.collections[index].items.filter(
+      //   (product) => product._id !== action.payload._id
+      // );
+
+      // state.collections[index] = {
+      //   _id: collections._id,
+      //   routeName: collections.routeName,
+      //   title: collections.title,
+      //   items: tempArray,
+      // };
+      state.items = state.items.filter(
         (product) => product._id !== action.payload._id
       );
-
-      state.collections[index] = {
-        _id: collections._id,
-        routeName: collections.routeName,
-        title: collections.title,
-        items: tempArray,
-      };
     },
     editProduct: (state, action: PayloadAction<Product>) => {
-      const index = state.collections.findIndex(
-        (category) => category.title === action.payload.title
-      );
-      const tempArray = state.collections[index].items.map((product) => {
+      //   const index = state.collections.findIndex(
+      //     (category) => category.title === action.payload.title
+      //   );
+      //   const tempArray = state.collections[index].items.map((product) => {
+      //     if (product._id === action.payload._id) {
+      //       return action.payload;
+      //     }
+      //     return product;
+      //   });
+      //   state.collections[index].items = tempArray;
+      // },
+
+      const tempArray = state.items.map((product) => {
         if (product._id === action.payload._id) {
           return action.payload;
         }
         return product;
       });
-      state.collections[index].items = tempArray;
+      state.items = tempArray;
+    },
+    addCategory: (state, action: PayloadAction<Product>) => {
+      const index = state.categories.findIndex(
+        (cat) => cat === action.payload.title.toLowerCase()
+      );
+
+      if (index < 0) {
+        state.categories.push(action.payload.title.toLowerCase());
+      }
+    },
+    addCategories: (state, action: PayloadAction<string[]>) => {
+      state.categories = action.payload;
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(getProductsFromDB.fulfilled, (state, action) => {
-      state.collections = action.payload.collections;
-      state.status = "success";
-    });
-    builder.addCase(getProductsFromDB.pending, (state) => {
-      state.status = "loading";
-    });
-    builder.addCase(getProductsFromDB.rejected, (state, action) => {
-      state.status = "failed";
-    });
-    builder.addCase(addProductsToDB.fulfilled, (state) => {
-      state.status = "success";
-    });
-    builder.addCase(addProductsToDB.pending, (state) => {
-      state.status = "loading";
-    });
-    builder.addCase(addProductsToDB.rejected, (state) => {
-      state.status = "failed";
-    });
-  },
+
+  // extraReducers: (builder) => {
+  //   builder.addCase(getProductsFromDB.fulfilled, (state, action) => {
+  //     state.collections = action.payload.collections;
+  //     state.status = "success";
+  //   });
+  //   builder.addCase(getProductsFromDB.pending, (state) => {
+  //     state.status = "loading";
+  //   });
+  //   builder.addCase(getProductsFromDB.rejected, (state, action) => {
+  //     state.status = "failed";
+  //   });
+  //   builder.addCase(addProductsToDB.fulfilled, (state) => {
+  //     state.status = "success";
+  //   });
+  //   builder.addCase(addProductsToDB.pending, (state) => {
+  //     state.status = "loading";
+  //   });
+  //   builder.addCase(addProductsToDB.rejected, (state) => {
+  //     state.status = "failed";
+  //   });
+  // },
 });
 
 export const getProducts = (state: RootState) => {
-  return state.product;
+  return state.product.items;
 };
 
 export const getCountAllProducts = (state: RootState) => {
-  return state.product.totalItems;
+  return state.product.items.length;
+};
+
+export const getCategories = (state: RootState) => {
+  return state.product.categories;
 };
 
 // export const getAdminProduct = (state: RootState) => {
 //   const collections = state.product.collections;
 // };
 
-export const { addAllProducts, addProduct, editProduct, deleteProduct } =
-  productSlice.actions;
+export const {
+  addAllProducts,
+  addProduct,
+  editProduct,
+  deleteProduct,
+  addCategories,
+  addCategory,
+} = productSlice.actions;
 
 export default productSlice.reducer;

@@ -5,25 +5,39 @@ import {
   getAdminProductsFromDB,
   Products,
   getProducts,
+  addAllProducts,
+  addCategories,
 } from "../../features/product/productSlice";
 
 const AdminHome = () => {
   const [allProducts, setAllProducts] = useState<Products>({
-    collections: [],
+    items: [],
     totalItems: 0,
-    status: "",
+    categories: [],
   });
   const dispatch = useAppDispatch();
-  const products = useAppSelector(getProducts);
 
   const getProductsAndSet = async () => {
-    const products = await dispatch(getAdminProductsFromDB()).unwrap();
+    const response = await dispatch(getAdminProductsFromDB()).unwrap();
 
-    console.log("products", products);
+    dispatch(addAllProducts(response.rows));
+    console.log("first render!");
+
+    const categories: string[] = [];
+    response.rows.forEach((prod) => {
+      const index = categories.findIndex((title) => title === prod.title);
+
+      if (index < 0) {
+        categories.push(prod.title);
+      }
+    });
+
+    dispatch(addCategories(categories));
+
     setAllProducts({
-      collections: products.collections,
-      totalItems: products.totalItems,
-      status: "success",
+      items: response.rows,
+      totalItems: response.count,
+      categories: categories,
     });
   };
   useEffect(() => {
@@ -31,13 +45,7 @@ const AdminHome = () => {
   }, []);
 
   return (
-    <div>
-      {!allProducts.collections.length ? (
-        "No products"
-      ) : (
-        <AllProducts allProducts={allProducts} />
-      )}
-    </div>
+    <div>{!allProducts.items.length ? "No products" : <AllProducts />}</div>
   );
 };
 

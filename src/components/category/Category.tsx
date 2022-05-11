@@ -1,19 +1,35 @@
 import Product from "../../../interfaces/product";
 import ProductComponent from "../../components/product/Product";
-import Category from "../../../interfaces/category";
+
 import "./Category.scss";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "../../app/hooks";
+import { getCollection } from "../../features/product/productSlice";
 
 type Props = {
-  category: Category;
+  category: string;
   count: number;
 };
 
 export default function CategoryComponent({ category, count }: Props) {
-  const { title, items } = category;
-  let prodCount = 0;
+  const [title, setTitle] = useState("");
+  const [items, setItems] = useState<Product[]>([]);
 
-  const _items: Array<Product> = items;
+  let prodCount = 0;
+  // NOTE: dito ko igeget yung items,
+  const dispatch = useAppDispatch();
+
+  const getSpecificCollection = () => {
+    const collection = dispatch(getCollection(category));
+    console.log("collection", collection);
+    setItems(collection.items);
+    setTitle(collection.title);
+  };
+
+  useEffect(() => {
+    getSpecificCollection();
+  }, []);
 
   return (
     <div className={`category_container`}>
@@ -22,10 +38,10 @@ export default function CategoryComponent({ category, count }: Props) {
       </p>
       <div
         className={`category_product_container  ${
-          count === category.items.length ? "wrap" : ""
+          count === items.length ? "wrap" : ""
         }`}
       >
-        {_items.map((product: Product) => {
+        {items.map((product: Product) => {
           if (prodCount <= count) {
             prodCount++;
             return <ProductComponent product={product} key={product._id} />;
