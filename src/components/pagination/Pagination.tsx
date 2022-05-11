@@ -65,6 +65,7 @@ const Pagination = ({ category, count, itemsPerPage }: Props) => {
       <div>
         {itemsPerPage && currentItems.length && (
           <ReactPaginate
+            key={title}
             className="pagination"
             breakLabel="..."
             nextLabel=">"

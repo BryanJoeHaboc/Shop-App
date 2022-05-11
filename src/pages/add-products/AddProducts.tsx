@@ -7,6 +7,7 @@ import { read, utils } from "xlsx";
 import axios from "axios";
 import { InputLabel } from "@material-ui/core";
 import isNumeric from "validator/lib/isNumeric";
+import isEmpty from "validator/lib/isEmpty";
 
 import { theme } from "../../components/custom-button/CustomButton";
 import "../signup/SignUp.scss";
@@ -159,6 +160,7 @@ export default function AddProducts() {
             value={title}
             label="Category"
             size="medium"
+            error={!!title && isEmpty(title)}
             onChange={(event) => handleChange(setTitle, event)}
           >
             <MenuItem disabled value="">
@@ -181,9 +183,9 @@ export default function AddProducts() {
             label="Name"
             variant="standard"
             fullWidth
-            error={!!name && isLength(name, { min: 3 })}
+            error={!!name && !isLength(name, { min: 3 })}
             helperText={
-              !!name && isLength(name, { min: 3 })
+              !!name && !isLength(name, { min: 3 })
                 ? "Product Name must be atleast three characters long  "
                 : ""
             }
@@ -198,15 +200,14 @@ export default function AddProducts() {
             label="Description"
             variant="standard"
             fullWidth
-            error={!!description && isLength(description, { min: 3 })}
+            error={!!description && !isLength(description, { min: 3 })}
             helperText={
-              !!description && isLength(description, { min: 3 })
+              !!description && !isLength(description, { min: 3 })
                 ? "Product Description must be atleast three characters long  "
                 : ""
             }
           />
         </div>
-        2
         <div>
           <TextField
             type="number"
@@ -217,9 +218,9 @@ export default function AddProducts() {
             label="Price"
             variant="standard"
             fullWidth
-            error={!!price && isNumeric(price.toString())}
+            error={!!price && !isNumeric(price.toString())}
             helperText={
-              !!price && isNumeric(price.toString())
+              !!price && !isNumeric(price.toString())
                 ? "Input must be a number"
                 : ""
             }
@@ -244,6 +245,12 @@ export default function AddProducts() {
               color="steelBlue"
               variant="contained"
               component="label"
+              disabled={
+                isEmpty(title) ||
+                (!!name && !isLength(name, { min: 3 })) ||
+                (!!description && !isLength(description, { min: 3 })) ||
+                !price
+              }
             >
               {state ? "Edit Product" : "Add Product"}
               <input type="submit" hidden />
