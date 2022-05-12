@@ -2,7 +2,7 @@ import Category from "../../../interfaces/category";
 import "./Category.scss";
 import { useParams } from "react-router-dom";
 // import data from "../../data/data";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import { getCollection } from "../../features/product/productSlice";
 import Pagination from "../pagination/Pagination";
 import { useEffect, useState } from "react";

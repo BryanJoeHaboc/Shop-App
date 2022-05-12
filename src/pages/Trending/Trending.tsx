@@ -10,7 +10,6 @@ import {
   getProductsFromDB,
 } from "../../features/product/productSlice";
 import {
-  getCart,
   getCartFromDB,
   setCart,
 } from "../../features/shoppingCart/shoppingCartSlice";
