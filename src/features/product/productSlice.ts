@@ -22,6 +22,18 @@ const initialState: Products = {
   categories: [],
 };
 
+export const searchProducts = (value: string) => {
+  return (_: any, getState: () => RootState): Product[] => {
+    const { product } = getState();
+
+    return product.items.filter(
+      (prod) =>
+        prod.title.toUpperCase().indexOf(value.toUpperCase()) >= 0 ||
+        prod.name.toUpperCase().indexOf(value.toUpperCase()) >= 0
+    );
+  };
+};
+
 export const getCollection = (category: string) => {
   return (_: any, getState: () => RootState): Category => {
     const { product } = getState() as RootState;
