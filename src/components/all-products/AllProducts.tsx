@@ -11,6 +11,7 @@ const AllProducts = () => {
 
   useEffect(() => {
     setCategories(cat);
+    console.log(cat);
     console.log("nasa all products ako");
   }, []);
   return (

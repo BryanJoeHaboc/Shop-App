@@ -12,6 +12,7 @@ import UserHeader from "../user/UserHeader";
 import AdminHeader from "../admin/AdminHeader";
 import "./Header.scss";
 import { clearCart } from "../../features/shoppingCart/shoppingCartSlice";
+import { clearProducts } from "../../features/product/productSlice";
 
 export default function Header() {
   const [showCart, setShowCart] = useState(false);
@@ -22,6 +23,7 @@ export default function Header() {
   const handleLogout = () => {
     dispatch(clearUser());
     dispatch(clearCart());
+    dispatch(clearProducts());
     navigate("/");
   };
 

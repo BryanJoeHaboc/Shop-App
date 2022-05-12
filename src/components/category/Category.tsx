@@ -34,7 +34,9 @@ export default function CategoryComponent({ category, count }: Props) {
   return (
     <div className={`category_container`}>
       <p className="container_title">
-        <Link to={`/products/${title.toLowerCase()}`}>{title}</Link>
+        {!!items.length && (
+          <Link to={`/products/${title.toLowerCase()}`}>{title}</Link>
+        )}
       </p>
       <div
         className={`category_product_container  ${

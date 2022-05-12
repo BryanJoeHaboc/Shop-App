@@ -27,7 +27,6 @@ export const userSlice = createSlice({
       state.userId = "";
       state.token = "";
       state.userType = "";
-
       localStorage.removeItem("persist:root");
     },
   },

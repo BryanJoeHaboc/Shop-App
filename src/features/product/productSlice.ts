@@ -26,34 +26,23 @@ export const getCollection = (category: string) => {
   return (_: any, getState: () => RootState): Category => {
     const { product } = getState() as RootState;
 
-    const collection = product.items.filter(
-      (prod) => prod.title.toLowerCase() === category.toLowerCase()
+    const collection = product.items.filter((prod) => {
+      console.log(prod.title.toLowerCase(), category);
+      return prod.title.toLowerCase() === category.toLowerCase();
+    });
+
+    const index = product.categories.findIndex(
+      (cat) => cat.toLowerCase() === category.toLowerCase()
     );
 
     return {
-      _id: product.categories.findIndex((cat) => cat === category),
+      _id: index,
       items: collection,
       routeName: category,
       title: category.charAt(0).toUpperCase() + category.slice(1),
     } as Category;
   };
 };
-
-// export const getCollection = createAsyncThunk<Category, string>(
-//   "product/get-collection",
-//   async (category, thunkApi) => {
-//     const { product } = thunkApi.getState() as RootState;
-
-//     const collection = product.items.filter(
-//       (prod) => prod.title.toLowerCase() === category
-//     );
-//     return {
-//       items: collection,
-//       routeName: category,
-//       title: category.charAt(0) + category.slice(1),
-//     } as Category;
-//   }
-// );
 
 export const editProductFromDB = createAsyncThunk<
   SuccessMessageAddProducts,
@@ -261,6 +250,7 @@ export const productSlice = createSlice({
       state.items = state.items.filter(
         (product) => product._id !== action.payload._id
       );
+      console.log(state.items);
     },
     editProduct: (state, action: PayloadAction<Product>) => {
       //   const index = state.collections.findIndex(
@@ -294,6 +284,11 @@ export const productSlice = createSlice({
     },
     addCategories: (state, action: PayloadAction<string[]>) => {
       state.categories = action.payload;
+    },
+    clearProducts: (state) => {
+      state.categories = [];
+      state.items = [];
+      state.totalItems = 0;
     },
   },
 
@@ -343,6 +338,7 @@ export const {
   deleteProduct,
   addCategories,
   addCategory,
+  clearProducts,
 } = productSlice.actions;
 
 export default productSlice.reducer;

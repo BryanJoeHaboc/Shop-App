@@ -28,7 +28,10 @@ function App() {
   const allProducts = useAppSelector(getProducts);
 
   const getProductsOnFirstLoad = async () => {
+    //NOTE: admin to user messess up allProducts
+    console.log("hindi pumasok");
     if (!allProducts.length) {
+      console.log("pumasok");
       const result = await dispatch(getProductsFromDB()).unwrap();
       dispatch(addAllProducts(result.rows));
       console.log("first render!");

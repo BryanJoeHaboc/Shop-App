@@ -11,7 +11,6 @@ import Loading from "../misc/Loading";
 export default function RenderCategory() {
   const { categoryType } = useParams();
   const [singleCategory, setSingleCategory] = useState<Category>({
-    _id: 0,
     title: "",
     routeName: "",
     items: [],
@@ -21,9 +20,10 @@ export default function RenderCategory() {
   useEffect(() => {
     if (categoryType) {
       const collection = dispatch(getCollection(categoryType));
+      console.log(collection);
       setSingleCategory(collection);
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }, [categoryType]);
 
   return (
