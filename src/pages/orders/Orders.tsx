@@ -8,11 +8,12 @@ import ButtonWithTheme from "../../components/custom-button/ButtonWithTheme";
 import { getOrdersFromDB } from "../../features/order/orderSlice";
 import { getUser } from "../../features/user/userSlice";
 import "./Orders.scss";
+import Modal from "../../components/modal/Modal";
 
 const Orders = () => {
   const [orders, setOrders] = useState<OrdersInterface[]>([]);
   const user = useAppSelector(getUser);
-
+  const [toggleModal, setToggleModal] = useState(true);
   const dispatch = useAppDispatch();
 
   const getOrders = async () => {
@@ -79,6 +80,22 @@ const Orders = () => {
             );
           })
         : "No Products"}
+      {toggleModal && (
+        <Modal
+          children={
+            <div>
+              <h1>Checkout Successful!</h1>
+              <ButtonWithTheme
+                display="Okay"
+                clickFunc={() => setToggleModal(!toggleModal)}
+              />
+            </div>
+          }
+          shown={toggleModal}
+          close={() => setToggleModal(!toggleModal)}
+          modalContentClass="modal-content-login"
+        />
+      )}
     </div>
   );
 };

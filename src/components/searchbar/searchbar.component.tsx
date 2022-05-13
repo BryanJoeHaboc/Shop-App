@@ -27,14 +27,13 @@ export default function CustomizedInputBase() {
 
     if (inputSearchBar?.current?.children[0]) {
       setOpenFilter(true);
-      console.log("mylove");
     }
   };
 
   return (
     <Paper
       component="form"
-      sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 200 }}
+      sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 300 }}
     >
       <InputBase
         ref={inputSearchBar}
@@ -47,14 +46,14 @@ export default function CustomizedInputBase() {
       <IconButton type="submit" sx={{ p: "12px" }} aria-label="search">
         <SearchIcon />
       </IconButton>
-
+      {/* 
       {openFilter && (
         <div className="mini_products_container ">
           {filteredProducts.map((prod) => (
             <MiniProducts product={prod} />
           ))}
         </div>
-      )}
+      )} */}
     </Paper>
   );
 }

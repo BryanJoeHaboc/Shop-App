@@ -10,6 +10,7 @@ interface ButtonThemeProp {
   changeFunc?: () => void;
   display?: string;
   size?: "small" | "medium" | "large";
+  sx?: {};
 }
 
 const ButtonWithTheme = ({
@@ -19,6 +20,7 @@ const ButtonWithTheme = ({
   changeFunc,
   display,
   size = "large",
+  sx,
 }: ButtonThemeProp) => {
   return (
     <ThemeProvider theme={theme}>
@@ -28,6 +30,7 @@ const ButtonWithTheme = ({
         color={color}
         variant={variant}
         size={size}
+        sx={sx}
       >
         {display}
       </Button>

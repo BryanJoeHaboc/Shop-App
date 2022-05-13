@@ -21,6 +21,7 @@ import {
 } from "./features/product/productSlice";
 import AdminHome from "./pages/admin/AdminHome";
 import Orders from "./pages/orders/Orders";
+import PageNotFound from "./pages/404/404";
 
 function App() {
   const user = useAppSelector(getUser);
@@ -59,6 +60,7 @@ function App() {
       <Header />
       <main className="App">
         <Routes>
+          <Route path="*" element={<PageNotFound />} />
           <Route path="/">
             <Route index element={<Homepage />} />
             <Route path="cart" element={<ShoppingCartComponent />}></Route>
