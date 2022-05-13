@@ -1,8 +1,8 @@
-import { useState, Dispatch } from "react";
+import { useState, Dispatch, useEffect } from "react";
 import { ThemeProvider } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import isEmail from "validator/lib/isEmail";
 import isLength from "validator/lib/isLength";
@@ -12,28 +12,34 @@ import { theme } from "../../components/custom-button/CustomButton";
 import "../signup/SignUp.scss";
 import { useAppDispatch } from "../../app/hooks";
 import { setUser } from "../../features/user/userSlice";
-import { ErrorWithSet } from "../../../interfaces/error";
+import Modal from "../../components/modal/Modal";
+import ButtonWithTheme from "../../components/custom-button/ButtonWithTheme";
+
+type fetchedUser = {
+  data: {
+    token: string;
+    user: {
+      firstName: string;
+      lastName: string;
+      userType: string;
+      userId: string;
+    };
+  };
+};
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [toggleModal, setToggleModal] = useState(false);
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   // for update: event: React.ChangeEvent for submit: event: React.FormEvent for click: event: React.MouseEvent
-
-  type fetchedUser = {
-    data: {
-      token: string;
-      user: {
-        firstName: string;
-        lastName: string;
-        userType: string;
-        userId: string;
-      };
-    };
-  };
+  useEffect(() => {
+    setToggleModal(!!(location.state as { toggleModal: boolean })?.toggleModal);
+  }, []);
 
   const handleSubmit = async (event: {}) => {
     const e = event as React.FormEvent<HTMLInputElement>;
@@ -136,6 +142,22 @@ export default function LoginPage() {
               Login{" "}
             </Button>
           </ThemeProvider>
+          {toggleModal && (
+            <Modal
+              children={
+                <div>
+                  <h1>User Created Succesfully!</h1>
+                  <ButtonWithTheme
+                    display="Okay"
+                    clickFunc={() => setToggleModal(!toggleModal)}
+                  />
+                </div>
+              }
+              shown={toggleModal}
+              close={() => setToggleModal(!toggleModal)}
+              modalContentClass="modal-content-login"
+            />
+          )}
         </div>
       </form>
     </div>

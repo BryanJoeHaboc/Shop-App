@@ -45,8 +45,8 @@ export default function SignUp() {
       if (!result) {
         throw Error("Error in creating User!");
       }
-
-      navigate("/login");
+      console.log("show modal");
+      navigate("/login", { state: { toggleModal: true } });
     } catch (e: any) {
       if (e.response.data.data.errors.length) {
         setError(e.response.data.data.errors[0].msg);

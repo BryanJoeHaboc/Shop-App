@@ -61,9 +61,7 @@ const ShoppingCartComponent = () => {
                 alignItems: "center",
                 justifyContent: "center",
                 flexDirection: "column",
-
                 gap: "20px",
-                // background: "red",
               }}
             >
               <h1>Are you sure you want to checkout your items?</h1>

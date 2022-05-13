@@ -4,9 +4,10 @@ type Props = {
   children: React.ReactNode;
   shown: React.SetStateAction<boolean>;
   close: () => void;
+  modalContentClass?: string;
 };
 
-const Modal = ({ children, shown, close }: Props) => {
+const Modal = ({ children, shown, close, modalContentClass }: Props) => {
   return shown ? (
     <div
       className="modal-backdrop"
@@ -16,7 +17,9 @@ const Modal = ({ children, shown, close }: Props) => {
       }}
     >
       <div
-        className="modal-content"
+        className={`modal-content  ${
+          modalContentClass ? modalContentClass : ""
+        }`}
         onClick={(e) => {
           // do not close modal if anything inside modal content is clicked
           e.stopPropagation();
