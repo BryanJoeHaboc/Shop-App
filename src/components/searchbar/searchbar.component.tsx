@@ -27,6 +27,7 @@ export default function CustomizedInputBase() {
 
     if (inputSearchBar?.current?.children[0]) {
       setOpenFilter(true);
+      console.log("mylove");
     }
   };
 
@@ -48,7 +49,7 @@ export default function CustomizedInputBase() {
       </IconButton>
 
       {openFilter && (
-        <div className="shopping_cart_container ">
+        <div className="mini_products_container ">
           {filteredProducts.map((prod) => (
             <MiniProducts product={prod} />
           ))}
