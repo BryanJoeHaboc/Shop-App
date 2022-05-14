@@ -9,9 +9,12 @@ import { useNavigate } from "react-router-dom";
 
 type Props = {
   product: Product;
+  cssStyle?: string;
+  enableDescription?: boolean;
 };
 
 export default function ProductComponent(props: Props) {
+  const { name, imageUrl, price, description } = props.product;
   const user = useAppSelector(getUser);
   const navigate = useNavigate();
 
@@ -21,12 +24,15 @@ export default function ProductComponent(props: Props) {
     });
   };
 
-  const { name, imageUrl, price } = props.product;
   return (
-    <div className="product_container" onClick={handleNavigateProductPage}>
+    <div
+      className={`product_container ${props.cssStyle ? props.cssStyle : ""}`}
+      onClick={handleNavigateProductPage}
+    >
       <img src={imageUrl} alt="name" />
       <p>{name}</p>
       <p>${price}</p>
+      {props.enableDescription ? description : null}
       {user.userType === "admin" ? (
         <div className="product_container_actions">
           <AdminActions product={props.product} />
