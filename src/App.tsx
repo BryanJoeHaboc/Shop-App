@@ -23,6 +23,7 @@ import AdminHome from "./pages/admin/AdminHome";
 import Orders from "./pages/orders/Orders";
 import PageNotFound from "./pages/404/404";
 import ProductPage from "./pages/product/ProductPage";
+import AllProducts from "./pages/all-products/AllProducts";
 
 function App() {
   const user = useAppSelector(getUser);
@@ -66,7 +67,7 @@ function App() {
             <Route index element={<Homepage />} />
             <Route path="cart" element={<ShoppingCartComponent />}></Route>
             <Route path="products">
-              <Route index element={<Trending />} />
+              <Route index element={<AllProducts itemsPerPage={10} />} />
               <Route path=":categoryType" element={<RenderCategory />} />
             </Route>
             <Route path="product">

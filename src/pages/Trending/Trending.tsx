@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import AllProducts from "../../components/all-products/AllProducts";
+import AllProducts from "../../components/hot-items/HotItems";
 import Loading from "../../components/misc/Loading";
 import {
   addAllProducts,

@@ -1,20 +1,13 @@
-.category_container {
-  display: flex;
-  flex-direction: column;
-  & p.container_title {
-    font-size: 2rem;
-    width: 21%;
-  }
+.all__products {
+  margin: 25px auto auto auto;
 
-  & .category_product_container {
+  width: 80%;
+
+  & .all__products__content {
     display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 3rem;
-  }
-
-  & .category_product_container.wrap {
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
   }
 
   & .pagination {
