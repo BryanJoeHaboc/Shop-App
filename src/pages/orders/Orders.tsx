@@ -13,7 +13,7 @@ import Modal from "../../components/modal/Modal";
 const Orders = () => {
   const [orders, setOrders] = useState<OrdersInterface[]>([]);
   const user = useAppSelector(getUser);
-  const [toggleModal, setToggleModal] = useState(true);
+  const [toggleModal, setToggleModal] = useState(false);
   const dispatch = useAppDispatch();
 
   const getOrders = async () => {

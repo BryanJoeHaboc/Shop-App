@@ -1,6 +1,15 @@
 import Card from "../../components/menuItem/MenuItem";
 import section from "../../../interfaces/menuItem";
 import "./HomePage.scss";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  addAllProducts,
+  addCategories,
+  getProducts,
+  getProductsFromDB,
+} from "../../features/product/productSlice";
+import { getUser } from "../../features/user/userSlice";
 
 // type menuItem = {
 //   imageUrl: string;
@@ -51,6 +60,34 @@ const INITIAL_STATE = {
 };
 
 export default function Homepage() {
+  const allProducts = useAppSelector(getProducts);
+  const user = useAppSelector(getUser);
+  const dispatch = useAppDispatch();
+
+  const getProds = async () => {
+    if (!allProducts.length) {
+      console.log("pumasok");
+      const result = await dispatch(getProductsFromDB()).unwrap();
+      dispatch(addAllProducts(result.rows));
+      console.log("first render!");
+      console.log(result);
+      const categories: string[] = [];
+      result.rows.forEach((prod) => {
+        const index = categories.findIndex((title) => title === prod.title);
+
+        if (index < 0) {
+          categories.push(prod.title);
+        }
+      });
+      console.log("categories", categories);
+      dispatch(addCategories(categories));
+    }
+  };
+
+  useEffect(() => {
+    getProds();
+  }, []);
+
   return (
     <div className="homepage_container">
       {INITIAL_STATE.sections.map((menuItem: section) => (

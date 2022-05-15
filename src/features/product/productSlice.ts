@@ -39,7 +39,6 @@ export const getCollection = (category: string) => {
     const { product } = getState() as RootState;
 
     const collection = product.items.filter((prod) => {
-      console.log(prod.title.toLowerCase(), category);
       return prod.title.toLowerCase() === category.toLowerCase();
     });
 
@@ -97,7 +96,7 @@ export const getAdminProductsFromDB = createAsyncThunk<
 >("product/get-admin-product", async (_: void, thunkApi) => {
   try {
     const { user } = thunkApi.getState() as RootState;
-
+    console.log(user.userId);
     const response = await axios.get(`/admin/products/${user.userId}`, {
       headers: {
         Authorization: `Bearer ${user.token}`,

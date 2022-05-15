@@ -23,7 +23,6 @@ export default function Trending() {
 
   const getProductsOnFirstLoad = async () => {
     //NOTE: admin to user messess up allProducts
-    console.log("hindi pumasok");
     if (!allProducts.length) {
       console.log("pumasok");
       const result = await dispatch(getProductsFromDB()).unwrap();

@@ -22,7 +22,6 @@ export default function CategoryComponent({ category, count }: Props) {
 
   const getSpecificCollection = () => {
     const collection = dispatch(getCollection(category));
-    console.log("collection", collection);
     setItems(collection.items);
     setTitle(collection.title);
   };
