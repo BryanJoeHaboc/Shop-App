@@ -46,14 +46,14 @@ export default function CustomizedInputBase() {
       <IconButton type="submit" sx={{ p: "12px" }} aria-label="search">
         <SearchIcon />
       </IconButton>
-      {/* 
+
       {openFilter && (
         <div className="mini_products_container ">
           {filteredProducts.map((prod) => (
             <MiniProducts product={prod} />
           ))}
         </div>
-      )} */}
+      )}
     </Paper>
   );
 }

@@ -58,17 +58,21 @@ const UserActions = (props: Props) => {
       },
     };
 
-    const responseAddItem = await dispatch(
-      addCartItemToDB(shoppingItem)
-    ).unwrap();
+    if (user.firstName && user.token && user.userId) {
+      const responseAddItem = await dispatch(
+        addCartItemToDB(shoppingItem)
+      ).unwrap();
 
-    console.log(responseAddItem);
+      console.log(responseAddItem);
 
-    if (responseAddItem.message) {
-      const responseCheckout = await dispatch(checkOutItems()).unwrap();
-      if (responseCheckout.message) {
-        navigate("/orders");
+      if (responseAddItem.message) {
+        const responseCheckout = await dispatch(checkOutItems()).unwrap();
+        if (responseCheckout.message) {
+          navigate("/orders");
+        }
       }
+    } else {
+      setToggleLoginModal(!toggleLoginModal);
     }
   };
 
@@ -89,7 +93,11 @@ const UserActions = (props: Props) => {
       <ButtonWithTheme display="Add To Cart" clickFunc={handleAddItemToCart} />
       <ButtonWithTheme
         display="Checkout"
-        clickFunc={() => setToggleModal(!toggleModal)}
+        clickFunc={() => {
+          user.firstName && user.lastName && user.token
+            ? setToggleModal(!toggleModal)
+            : setToggleLoginModal(!toggleLoginModal);
+        }}
       />
       {toggleModal && (
         <Modal
