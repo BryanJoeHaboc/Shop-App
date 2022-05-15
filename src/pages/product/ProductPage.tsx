@@ -12,6 +12,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     setProduct((location.state as { product: Product })?.product);
+    console.log(location);
   }, [location]);
   return (
     <div>

@@ -1,0 +1,12 @@
+.mini_products_container {
+  position: fixed;
+  margin-top: 75px;
+  top: 0;
+  max-height: 300px;
+  width: 16%;
+  border: 1px solid rgb(0 0 0 / 12%);
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%),
+    0px 1px 3px 0px rgb(0 0 0 / 12%);
+}

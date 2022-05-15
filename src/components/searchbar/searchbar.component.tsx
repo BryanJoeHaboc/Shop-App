@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { searchProducts } from "../../features/product/productSlice";
 import Product from "../../../interfaces/product";
 import { useRef, useState } from "react";
+import "./MiniProducts.scss";
 
 import MiniProducts from "../mini-products/MiniProducts";
 

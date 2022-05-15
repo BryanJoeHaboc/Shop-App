@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Product from "../../../interfaces/product";
 
 type Props = {
@@ -5,8 +6,14 @@ type Props = {
 };
 
 const MiniProducts = ({ product }: Props) => {
+  const navigate = useNavigate();
+
+  const handleOnClick = () => {
+    navigate(`/product/${product._id}`, { state: { product: product } });
+  };
+
   return (
-    <div className="shopping_cart_items">
+    <div className="shopping_cart_items" onClick={handleOnClick}>
       <img src={product.imageUrl} alt="" />
       <div className="shopping_cart_items_info">
         <p className="bold_900">{product.name}</p>
