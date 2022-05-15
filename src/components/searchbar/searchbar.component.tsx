@@ -7,7 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useAppDispatch } from "../../app/hooks";
 import { searchProducts } from "../../features/product/productSlice";
 import Product from "../../../interfaces/product";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./MiniProducts.scss";
 
 import MiniProducts from "../mini-products/MiniProducts";
@@ -15,14 +15,16 @@ import MiniProducts from "../mini-products/MiniProducts";
 export default function CustomizedInputBase() {
   const [openFilter, setOpenFilter] = useState(false);
   const [filteredProducts, setFiltedProducts] = useState<Product[]>([]);
+  const [searchValue, setSearchValue] = useState("");
 
   const dispatch = useAppDispatch();
   const inputSearchBar = useRef<HTMLInputElement | null>(null);
+  const miniProductsDiv = useRef<HTMLDivElement | null>(null);
 
   const handleSearchProducts = (e: {}) => {
     const event = e as React.ChangeEvent<HTMLInputElement>;
-    const product = event.target.value;
-    const products: Product[] = dispatch(searchProducts(product));
+    setSearchValue(event.target.value);
+    const products: Product[] = dispatch(searchProducts(searchValue));
     console.log(products);
     setFiltedProducts(products);
 
@@ -30,6 +32,18 @@ export default function CustomizedInputBase() {
       setOpenFilter(true);
     }
   };
+
+  useEffect(() => {
+    if (searchValue.length === 0) {
+      if (miniProductsDiv.current) {
+        miniProductsDiv.current.style.display = "none";
+      }
+    } else {
+      if (miniProductsDiv.current) {
+        miniProductsDiv.current.style.display = "block";
+      }
+    }
+  }, [searchValue]);
 
   return (
     <Paper
@@ -44,15 +58,18 @@ export default function CustomizedInputBase() {
         onChange={(e) => handleSearchProducts(e)}
         size="medium"
       />
+
       <IconButton type="submit" sx={{ p: "12px" }} aria-label="search">
         <SearchIcon />
       </IconButton>
 
       {openFilter && (
-        <div className="mini_products_container ">
-          {filteredProducts.map((prod) => (
-            <MiniProducts product={prod} />
-          ))}
+        <div ref={miniProductsDiv} className="mini_products_container ">
+          {filteredProducts.length ? (
+            filteredProducts.map((prod) => <MiniProducts product={prod} />)
+          ) : (
+            <h2>No Products</h2>
+          )}
         </div>
       )}
     </Paper>
