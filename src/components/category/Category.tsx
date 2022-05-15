@@ -43,13 +43,17 @@ export default function CategoryComponent({ category, count }: Props) {
           count === items.length ? "wrap" : ""
         }`}
       >
-        {items.map((product: Product) => {
-          if (prodCount <= count) {
-            prodCount++;
-            return <ProductComponent product={product} key={product._id} />;
-          }
-          return null;
-        })}
+        {!!items.length ? (
+          items.map((product: Product) => {
+            if (prodCount <= count) {
+              prodCount++;
+              return <ProductComponent product={product} key={product._id} />;
+            }
+            return null;
+          })
+        ) : (
+          <h1>No Products</h1>
+        )}
       </div>
     </div>
   );

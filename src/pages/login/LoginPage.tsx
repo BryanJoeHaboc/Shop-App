@@ -38,6 +38,7 @@ export default function LoginPage() {
 
   // for update: event: React.ChangeEvent for submit: event: React.FormEvent for click: event: React.MouseEvent
   useEffect(() => {
+    console.log(location);
     setToggleModal(!!(location.state as { toggleModal: boolean })?.toggleModal);
   }, []);
 
@@ -88,11 +89,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="login_page_container">
+    <div
+      className={`login_page_container ${
+        location.pathname === "/login" ? "" : "login__modal__container"
+      } `}
+    >
       <h1>Shopper</h1>
       <h3 className="error">{error}</h3>
       <form
-        className="login_page_form_container"
+        className="login_page_form_container "
         onSubmit={(e) => handleSubmit(e)}
       >
         <div>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Modal.scss";
 
 type Props = {
@@ -27,6 +28,16 @@ const Modal = ({ children, shown, close, modalContentClass }: Props) => {
       >
         {/* <button onClick={close}>Close</button> */}
         {children}
+
+        {modalContentClass === "login__modal" ? (
+          <span>
+            Don't have an account? Click{" "}
+            <Link to="/signup">
+              <b>here</b>
+            </Link>{" "}
+            to create an account
+          </span>
+        ) : null}
       </div>
     </div>
   ) : null;

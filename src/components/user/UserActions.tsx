@@ -1,5 +1,5 @@
 import ButtonWithTheme from "../custom-button/ButtonWithTheme";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import ProductInterface from "../../../interfaces/product";
 import {
   addCartItemToDB,
@@ -11,15 +11,22 @@ import { useState } from "react";
 import Modal from "../modal/Modal";
 import MiniProducts from "../mini-products/MiniProducts";
 import { useNavigate } from "react-router-dom";
+import { getUser } from "../../features/user/userSlice";
+import LoginPage from "../../pages/login/LoginPage";
+import "./LoginModal.scss";
 
 type Props = {
   product: ProductInterface;
 };
 
 const UserActions = (props: Props) => {
-  const dispatch = useAppDispatch();
+  const [toggleLoginModal, setToggleLoginModal] = useState(false);
+
   const [toggleModal, setToggleModal] = useState(false);
+
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = useAppSelector(getUser);
 
   const handleAddItemToCart = async () => {
     const shoppingItem = {
@@ -30,10 +37,15 @@ const UserActions = (props: Props) => {
       },
     };
 
-    const result = await dispatch(addCartItemToDB(shoppingItem)).unwrap();
-    console.log(result);
-    if (result.message) {
-      dispatch(addItem(shoppingItem));
+    if (user.firstName && user.token && user.userId) {
+      console.log(user.firstName, user.token, user.userId);
+      const result = await dispatch(addCartItemToDB(shoppingItem)).unwrap();
+      console.log(result);
+      if (result.message) {
+        dispatch(addItem(shoppingItem));
+      }
+    } else {
+      setToggleLoginModal(!toggleLoginModal);
     }
   };
 
@@ -117,6 +129,14 @@ const UserActions = (props: Props) => {
           shown={toggleModal}
           close={() => setToggleModal(!toggleModal)}
           modalContentClass="modal-content-checkout"
+        />
+      )}
+      {toggleLoginModal && (
+        <Modal
+          children={<LoginPage />}
+          shown={toggleLoginModal}
+          close={() => setToggleLoginModal(!toggleLoginModal)}
+          modalContentClass={"login__modal"}
         />
       )}
     </div>
