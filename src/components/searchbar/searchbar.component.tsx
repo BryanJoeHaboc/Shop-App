@@ -11,12 +11,14 @@ import { useEffect, useRef, useState } from "react";
 import "./MiniProducts.scss";
 
 import MiniProducts from "../mini-products/MiniProducts";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 export default function CustomizedInputBase() {
   const [openFilter, setOpenFilter] = useState(false);
   const [filteredProducts, setFiltedProducts] = useState<Product[]>([]);
   const [searchValue, setSearchValue] = useState("");
 
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const inputSearchBar = useRef<HTMLInputElement | null>(null);
   const miniProductsDiv = useRef<HTMLDivElement | null>(null);
@@ -25,12 +27,23 @@ export default function CustomizedInputBase() {
     const event = e as React.ChangeEvent<HTMLInputElement>;
     setSearchValue(event.target.value);
     const products: Product[] = dispatch(searchProducts(searchValue));
-    console.log(products);
+    // console.log(products);
     setFiltedProducts(products);
 
     if (inputSearchBar?.current?.children[0]) {
       setOpenFilter(true);
     }
+  };
+
+  const handleSubmit = (e: {}) => {
+    const event = e as React.FormEvent<HTMLInputElement>;
+    event.preventDefault();
+    const search = searchValue;
+    setSearchValue("");
+    navigate({
+      pathname: "products",
+      search: createSearchParams({ search }).toString(),
+    });
   };
 
   useEffect(() => {
@@ -47,6 +60,7 @@ export default function CustomizedInputBase() {
 
   return (
     <Paper
+      onSubmit={handleSubmit}
       component="form"
       sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 300 }}
     >
@@ -57,6 +71,7 @@ export default function CustomizedInputBase() {
         inputProps={{ "aria-label": "Search products" }}
         onChange={(e) => handleSearchProducts(e)}
         size="medium"
+        value={searchValue}
       />
 
       <IconButton type="submit" sx={{ p: "12px" }} aria-label="search">

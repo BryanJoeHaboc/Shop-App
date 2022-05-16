@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactPaginate from "react-paginate";
 
 import Product from "../../../interfaces/product";
-import { useAppSelector } from "../../app/hooks";
-import { getProducts } from "../../features/product/productSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  getProducts,
+  searchProducts,
+} from "../../features/product/productSlice";
 import Loading from "../../components/misc/Loading";
 import ProductComponent from "../../components/product/Product";
 import "./AllProducts.scss";
+import { useSearchParams } from "react-router-dom";
 
 type Props = {
   itemsPerPage: number;
@@ -15,22 +19,31 @@ type Props = {
 const AllProducts = ({ itemsPerPage }: Props) => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const allItems = useAppSelector(getProducts);
   const [pageCount, setPageCount] = useState<number>(0);
   const [itemOffset, setItemOffset] = useState(0);
+  const allItems = useRef<Product[]>();
+  allItems.current = useAppSelector(getProducts);
+  let [searchParams, setSearchParams] = useSearchParams();
+  let search = searchParams.get("search");
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (itemsPerPage !== undefined) {
+    console.log(searchParams.get("search"));
+    if (search) {
+      allItems.current = dispatch(searchProducts(search));
+    }
+
+    if (itemsPerPage !== undefined && allItems.current !== undefined) {
       const endOffset = itemOffset + itemsPerPage;
       console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-      setAllProducts(allItems.slice(itemOffset, endOffset));
+      setAllProducts(allItems.current.slice(itemOffset, endOffset));
       console.log(allProducts);
-      setPageCount(Math.ceil(allItems.length / itemsPerPage));
-      if (allItems.length > 0) {
+      setPageCount(Math.ceil(allItems.current.length / itemsPerPage));
+      if (allItems.current.length > 0) {
         setIsLoading(false);
       }
     }
-  }, [itemOffset, itemsPerPage, allItems]);
+  }, [itemOffset, itemsPerPage, search]);
 
   // Invoke when user click to request another page.
   type HandlePageClick = {
@@ -38,7 +51,8 @@ const AllProducts = ({ itemsPerPage }: Props) => {
   };
 
   const handlePageClick = (event: HandlePageClick) => {
-    const newOffset = (event.selected * itemsPerPage) % allItems.length;
+    const newOffset =
+      (event.selected * itemsPerPage) % allItems!.current!.length;
     console.log(
       `User requested page number ${event.selected}, which is offset ${newOffset}`
     );
