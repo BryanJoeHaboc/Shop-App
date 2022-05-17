@@ -40,9 +40,6 @@ export default function Header() {
         <div className="header_actions_searchbar_container">
           <SearchBar />
         </div>
-        <div className="header_actions_favorites">
-          <FavoriteIcon />
-        </div>
         <div className="header_actions_cart_holder">
           <IconButton
             color="inherit"

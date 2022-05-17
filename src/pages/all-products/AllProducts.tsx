@@ -39,9 +39,7 @@ const AllProducts = ({ itemsPerPage }: Props) => {
       setAllProducts(allItems.current.slice(itemOffset, endOffset));
       console.log(allProducts);
       setPageCount(Math.ceil(allItems.current.length / itemsPerPage));
-      if (allItems.current.length > 0) {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
   }, [itemOffset, itemsPerPage, search]);
 
@@ -64,16 +62,18 @@ const AllProducts = ({ itemsPerPage }: Props) => {
       <div className="all__products__content">
         {isLoading ? (
           <Loading />
-        ) : (
+        ) : allProducts.length ? (
           allProducts.map((item) => {
             return <ProductComponent product={item} />;
           })
+        ) : (
+          <h1>No Available Products</h1>
         )}
       </div>
 
       <div className="pageButton">
         {" "}
-        {itemsPerPage && allProducts.length && (
+        {itemsPerPage && !!allProducts.length && (
           <ReactPaginate
             className="pagination"
             breakLabel="..."

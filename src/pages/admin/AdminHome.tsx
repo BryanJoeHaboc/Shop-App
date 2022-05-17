@@ -21,36 +21,36 @@ const AdminHome = () => {
   const adminCategories = useAppSelector(getCategories);
 
   const getProductsAndSet = async () => {
-    if (!adminProducts.length) {
-      const response = await dispatch(getAdminProductsFromDB()).unwrap();
+    // if (!adminProducts.length) {
+    const response = await dispatch(getAdminProductsFromDB()).unwrap();
 
-      dispatch(addAllProducts(response.rows));
-      console.log("first render!");
-      console.log(response);
+    dispatch(addAllProducts(response.rows));
+    console.log("first render!");
+    console.log(response);
 
-      const categories: string[] = [];
-      response.rows.forEach((prod) => {
-        const index = categories.findIndex((title) => title === prod.title);
+    const categories: string[] = [];
+    response.rows.forEach((prod) => {
+      const index = categories.findIndex((title) => title === prod.title);
 
-        if (index < 0) {
-          categories.push(prod.title);
-        }
-      });
+      if (index < 0) {
+        categories.push(prod.title);
+      }
+    });
 
-      dispatch(addCategories(categories));
+    dispatch(addCategories(categories));
 
-      setAllProducts({
-        items: response.rows,
-        totalItems: response.count,
-        categories: categories,
-      });
-    } else {
-      setAllProducts({
-        items: adminProducts,
-        totalItems: adminProducts.length,
-        categories: adminCategories,
-      });
-    }
+    setAllProducts({
+      items: response.rows,
+      totalItems: response.count,
+      categories: categories,
+    });
+    // } else {
+    //   setAllProducts({
+    //     items: adminProducts,
+    //     totalItems: adminProducts.length,
+    //     categories: adminCategories,
+    //   });
+    // }
   };
   useEffect(() => {
     getProductsAndSet();

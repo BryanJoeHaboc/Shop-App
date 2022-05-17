@@ -9,18 +9,6 @@ import {
   getProducts,
   getProductsFromDB,
 } from "../../features/product/productSlice";
-import { getUser } from "../../features/user/userSlice";
-
-// type menuItem = {
-//   imageUrl: string;
-//   imageAlt: string;
-//   title: string;
-//   price: number;
-//   size: string;
-// };
-// type Props = {
-//   menuItems: menuItem[];
-// };
 
 const INITIAL_STATE = {
   sections: [
@@ -61,12 +49,10 @@ const INITIAL_STATE = {
 
 export default function Homepage() {
   const allProducts = useAppSelector(getProducts);
-  const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
 
   const getProds = async () => {
     if (!allProducts.length) {
-      console.log("pumasok");
       const result = await dispatch(getProductsFromDB()).unwrap();
       dispatch(addAllProducts(result.rows));
       console.log("first render!");
@@ -79,7 +65,6 @@ export default function Homepage() {
           categories.push(prod.title);
         }
       });
-      console.log("categories", categories);
       dispatch(addCategories(categories));
     }
   };

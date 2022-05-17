@@ -51,7 +51,7 @@ export default function CategoryComponent({ category, count }: Props) {
             return null;
           })
         ) : (
-          <h1>No Products</h1>
+          <h1>No Available Products</h1>
         )}
       </div>
     </div>

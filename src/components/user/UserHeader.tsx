@@ -7,6 +7,7 @@ const UserHeader = () => {
   return (
     <nav className="header_links">
       {user.token && <Link to="/orders">Orders</Link>}
+      {user.token && <Link to="/cart">Cart</Link>}
       <Link to="/products">All Products</Link>
       <Link to="/products/womens">Womens</Link>
       <Link to="/products/mens">Mens</Link>

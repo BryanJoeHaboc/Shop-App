@@ -70,7 +70,7 @@ const Pagination = ({ category, count, itemsPerPage }: Props) => {
         </div>
       )}
       <div>
-        {itemsPerPage && currentItems.length && (
+        {itemsPerPage && !!currentItems.length ? (
           <ReactPaginate
             key={title}
             className="pagination"
@@ -83,6 +83,8 @@ const Pagination = ({ category, count, itemsPerPage }: Props) => {
             previousLabel="<"
             // renderOnZeroPageCount={null}
           />
+        ) : (
+          <h1>No Available Products</h1>
         )}
       </div>
     </div>

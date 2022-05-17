@@ -83,7 +83,7 @@ export default function CustomizedInputBase() {
           {filteredProducts.length ? (
             filteredProducts.map((prod) => <MiniProducts product={prod} />)
           ) : (
-            <h2>No Products</h2>
+            <h2>No Available Products</h2>
           )}
         </div>
       )}

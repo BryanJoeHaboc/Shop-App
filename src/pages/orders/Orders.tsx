@@ -79,7 +79,7 @@ const Orders = () => {
               </div>
             );
           })
-        : "No Products"}
+        : "No Available Products"}
       {toggleModal && (
         <Modal
           children={

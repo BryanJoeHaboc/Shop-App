@@ -14,7 +14,7 @@ import ButtonWithTheme from "../../components/custom-button/ButtonWithTheme";
 import { useState } from "react";
 
 const ShoppingCartComponent = () => {
-  const [toggleModal, setToggleModal] = useState(true);
+  const [toggleModal, setToggleModal] = useState(false);
 
   const shoppingCart = useAppSelector((state: RootState) => state.shoppingCart);
   const total = useAppSelector(totalAmount);
