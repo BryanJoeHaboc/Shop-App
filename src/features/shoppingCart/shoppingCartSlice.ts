@@ -205,13 +205,11 @@ export const shoppingCartSlice = createSlice({
 
       if (index >= 0) {
         if (state.items[index].cartItem.quantity === 1) {
-          console.log("delete ");
           const tempItem = state.items.filter(
             (item) => item.product._id !== action.payload.product._id
           );
           state.items = tempItem;
         } else {
-          console.log("sub 1");
           state.items[index].cartItem.quantity--;
         }
       }

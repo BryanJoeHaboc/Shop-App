@@ -5,7 +5,6 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
 
 import ShoppingCartComponent from "../../pages/shopping-cart-window/ShoppingCartWindow";
-import { RefObject, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getUser, clearUser } from "../../features/user/userSlice";
 import UserHeader from "../user/UserHeader";
@@ -44,16 +43,21 @@ export default function Header() {
         <div className="header_actions_searchbar_container">
           <SearchBar />
         </div>
-        <div
-          ref={ref as RefObject<HTMLDivElement>}
-          className="header_actions_cart_holder"
-          onClick={() => setIsComponentVisible(!isComponentVisible)}
-        >
-          <IconButton color="inherit" aria-label="add to shopping cart">
+        <div className="header_actions_cart_holder">
+          <IconButton
+            onClick={() => {
+              setIsComponentVisible(true);
+            }}
+            color="inherit"
+            aria-label="add to shopping cart"
+          >
             <AddShoppingCartIcon />
           </IconButton>
 
-          <div>{isComponentVisible ? <ShoppingCartComponent /> : null}</div>
+          <div ref={ref}>
+            {" "}
+            {isComponentVisible ? <ShoppingCartComponent /> : null}
+          </div>
         </div>
 
         {user.token ? (
