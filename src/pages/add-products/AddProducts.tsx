@@ -24,17 +24,19 @@ import { MenuItem, Select } from "@mui/material";
 import Product from "../../../interfaces/product";
 import { useLocation, useNavigate } from "react-router-dom";
 import isLength from "validator/lib/isLength";
+import Modal from "../../components/modal/Modal";
 
 interface Prop {
   state?: Product;
 }
 
 export default function AddProducts() {
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [price, setPrice] = useState<number>(0);
-  const [imageUrl, setImageUrl] = useState<string>("");
-  const [name, setName] = useState<string>("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [imageUrl, setImageUrl] = useState("");
+  const [name, setName] = useState("");
+  const [toggleError, setToggleError] = useState(false);
 
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
@@ -72,17 +74,30 @@ export default function AddProducts() {
         result = await dispatch(editProductFromDB(prod)).unwrap();
         if (result.product) {
           dispatch(editProduct(result.product));
-          navigate("/admin");
+          navigate("/admin/products", {
+            state: { message: "Product Edited Successfully" },
+          });
         }
       } else {
         result = await dispatch(addProductsToDB(prod)).unwrap();
         if (result.product) {
           dispatch(addProduct(result.product));
-          navigate("/admin");
+          navigate("/admin/products", {
+            state: { message: "Product Added Successfully" },
+          });
         }
       }
       console.log(result);
     } catch (e) {
+      <Modal
+        children={
+          <div>
+            <h1>Something went wrong, please try again</h1>
+          </div>
+        }
+        shown={toggleError}
+        close={() => setToggleError(!toggleError)}
+      />;
       console.log(e);
     }
   };
@@ -138,7 +153,20 @@ export default function AddProducts() {
             },
           }
         );
+
+        navigate("/admin/products", {
+          state: { message: "Products Added Successfully" },
+        });
       } catch (error) {
+        <Modal
+          children={
+            <div>
+              <h1>Something went wrong, please try again</h1>
+            </div>
+          }
+          shown={toggleError}
+          close={() => setToggleError(!toggleError)}
+        />;
         console.log(error);
       }
     };
@@ -257,26 +285,30 @@ export default function AddProducts() {
             </Button>
           </ThemeProvider>
         </div>
-        Or
+        {!state ? "Or" : ""}
         <div>
-          <ThemeProvider theme={theme}>
-            <Button
-              size="large"
-              fullWidth
-              color="steelBlue"
-              variant="contained"
-              component="label"
-            >
-              Add File
-              <input
-                type="file"
-                hidden
-                onChange={(event) => {
-                  handleUpload(event);
-                }}
-              />
-            </Button>
-          </ThemeProvider>
+          {!state ? (
+            <ThemeProvider theme={theme}>
+              <Button
+                size="large"
+                fullWidth
+                color="steelBlue"
+                variant="contained"
+                component="label"
+              >
+                Add File
+                <input
+                  type="file"
+                  hidden
+                  onChange={(event) => {
+                    handleUpload(event);
+                  }}
+                />
+              </Button>
+            </ThemeProvider>
+          ) : (
+            ""
+          )}
         </div>
       </form>
     </div>

@@ -5,4 +5,5 @@ export default interface Product {
   price: number;
   description?: string;
   title: string;
+  userId: string;
 }

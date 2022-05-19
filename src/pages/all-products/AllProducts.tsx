@@ -10,7 +10,10 @@ import {
 import Loading from "../../components/misc/Loading";
 import ProductComponent from "../../components/product/Product";
 import "./AllProducts.scss";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { getUser } from "../../features/user/userSlice";
+import Modal from "../../components/modal/Modal";
+import ButtonWithTheme from "../../components/custom-button/ButtonWithTheme";
 
 type Props = {
   itemsPerPage: number;
@@ -22,10 +25,26 @@ const AllProducts = ({ itemsPerPage }: Props) => {
   const [pageCount, setPageCount] = useState<number>(0);
   const [itemOffset, setItemOffset] = useState(0);
   const allItems = useRef<Product[]>();
+  const [modalMessages, setModalMessages] = useState("");
+  const [toggleModal, setToggleModal] = useState(false);
+
   allItems.current = useAppSelector(getProducts);
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
   let search = searchParams.get("search");
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const user = useAppSelector(getUser);
+
+  useEffect(() => {
+    console.log(location);
+    if (user.userType === "admin") {
+      let state = location.state as { message: string };
+      if (state && state.message) {
+        setModalMessages(state.message);
+        setToggleModal(!toggleModal);
+      }
+    }
+  }, [location.state]);
 
   useEffect(() => {
     console.log(searchParams.get("search"));
@@ -84,6 +103,22 @@ const AllProducts = ({ itemsPerPage }: Props) => {
             activeClassName="active"
             previousLabel="<"
             // renderOnZeroPageCount={null}
+          />
+        )}
+        {user.userType === "admin" && (
+          <Modal
+            close={() => setToggleModal(!toggleModal)}
+            shown={toggleModal}
+            children={
+              <div>
+                <h1>{modalMessages}</h1>
+                <ButtonWithTheme
+                  display="Okay"
+                  clickFunc={() => setToggleModal(!toggleModal)}
+                />
+              </div>
+            }
+            modalContentClass="modal-content-messages"
           />
         )}
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import AllProducts from "../../components/hot-items/HotItems";
 import {
@@ -9,6 +10,7 @@ import {
   addCategories,
   getCategories,
 } from "../../features/product/productSlice";
+import { getUser } from "../../features/user/userSlice";
 
 const AdminHome = () => {
   const [allProducts, setAllProducts] = useState<Products>({
@@ -16,6 +18,7 @@ const AdminHome = () => {
     totalItems: 0,
     categories: [],
   });
+  const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
   const adminProducts = useAppSelector(getProducts);
   const adminCategories = useAppSelector(getCategories);
@@ -24,7 +27,11 @@ const AdminHome = () => {
     // if (!adminProducts.length) {
     const response = await dispatch(getAdminProductsFromDB()).unwrap();
 
-    dispatch(addAllProducts(response.rows));
+    dispatch(
+      addAllProducts(
+        response.rows.filter((prod) => prod.userId === user.userId)
+      )
+    );
     console.log("first render!");
     console.log(response);
 
@@ -57,7 +64,13 @@ const AdminHome = () => {
   }, []);
 
   return (
-    <div>{!allProducts.items.length ? "No products" : <AllProducts />}</div>
+    <div>
+      {!allProducts.items.length ? (
+        <h1>No Available Products</h1>
+      ) : (
+        <AllProducts />
+      )}
+    </div>
   );
 };
 

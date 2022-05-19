@@ -116,6 +116,18 @@ function App() {
                   )
                 }
               />
+              <Route
+                path="products"
+                element={
+                  user.userType === "admin" ? (
+                    <ProtectedRoute user={user}>
+                      <AllProducts itemsPerPage={10} />
+                    </ProtectedRoute>
+                  ) : (
+                    <Navigate to="/home" />
+                  )
+                }
+              />
             </Route>
           </Route>
         </Routes>
