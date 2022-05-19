@@ -57,5 +57,15 @@ export default function Trending() {
     getProductsOnFirstLoad();
     getCartFromDataBase();
   }, []);
-  return <>{isLoading ? <Loading /> : <AllProducts />} </>;
+  return (
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : !!allProducts.length ? (
+        <AllProducts />
+      ) : (
+        <h1>No Available Products</h1>
+      )}{" "}
+    </>
+  );
 }

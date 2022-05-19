@@ -27,9 +27,7 @@ const Pagination = ({ category, count, itemsPerPage }: Props) => {
       console.log(`Loading items from ${itemOffset} to ${endOffset}`);
       setCurrentItems(items.slice(itemOffset, endOffset));
       setPageCount(Math.ceil(items.length / itemsPerPage));
-      if (items.length > 0) {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
   }, [itemOffset, itemsPerPage, location, items]);
 

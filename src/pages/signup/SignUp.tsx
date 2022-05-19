@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 import isEmail from "validator/lib/isEmail";
 import isLength from "validator/lib/isLength";
-import isAlphanumeric from "validator/lib/isAlphanumeric";
 
 import { SignUpUser } from "../../../interfaces/user";
 import { theme } from "../../components/custom-button/CustomButton";
@@ -23,6 +22,18 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   // for update: event: React.ChangeEvent for submit: event: React.FormEvent for click: event: React.MouseEvent
+
+  const checkIfItHasSpecialCharacter = (word: string) => {
+    let iChars = "!@#$%^&*()+=-[]\\';,./{}|\":<>?";
+    for (let i = 0; i < word.length; i++) {
+      if (iChars.indexOf(word.charAt(i)) !== -1) {
+        return true;
+        // alert(
+        //   "Your username has special characters. \nThese are not allowed.\n Please remove them and try again."
+        // );
+      }
+    }
+  };
 
   const handleSubmit = async (event: {}) => {
     const e = event as React.FormEvent<HTMLInputElement>;
@@ -77,10 +88,10 @@ export default function SignUp() {
             label="First Name"
             variant="standard"
             fullWidth
-            error={!!firstName && !isAlphanumeric(firstName)}
+            error={!!firstName && checkIfItHasSpecialCharacter(firstName)}
             helperText={
-              !!firstName && !isAlphanumeric(firstName)
-                ? "First Name must only contain alphanumeric characters "
+              !!firstName && checkIfItHasSpecialCharacter(firstName)
+                ? "Special characters are not allowed for First Name. Please Try Again "
                 : ""
             }
           />
@@ -94,10 +105,10 @@ export default function SignUp() {
             label="Last Name"
             variant="standard"
             fullWidth
-            error={!!lastName && !isAlphanumeric(lastName)}
+            error={!!lastName && checkIfItHasSpecialCharacter(lastName)}
             helperText={
-              !!lastName && !isAlphanumeric(lastName)
-                ? "Last Name must only contain alphanumeric characters "
+              !!lastName && checkIfItHasSpecialCharacter(lastName)
+                ? "Special characters are not allowed for First Name. Please Try Again "
                 : ""
             }
           />
@@ -164,8 +175,8 @@ export default function SignUp() {
               variant="contained"
               type="submit"
               disabled={
-                !firstName ||
-                !lastName ||
+                (firstName && checkIfItHasSpecialCharacter(firstName)) ||
+                (lastName && checkIfItHasSpecialCharacter(lastName)) ||
                 !email ||
                 !password ||
                 !confirmPassword
