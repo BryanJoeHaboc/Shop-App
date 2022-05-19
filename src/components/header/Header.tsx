@@ -5,7 +5,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
 
 import ShoppingCartComponent from "../../pages/shopping-cart-window/ShoppingCartWindow";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getUser, clearUser } from "../../features/user/userSlice";
 import UserHeader from "../user/UserHeader";
@@ -13,9 +13,13 @@ import AdminHeader from "../admin/AdminHeader";
 import "./Header.scss";
 import { clearCart } from "../../features/shoppingCart/shoppingCartSlice";
 import { clearProducts } from "../../features/product/productSlice";
+import useComponentVisible from "../useComponentVisible/UseComponentVisible";
 
 export default function Header() {
-  const [showCart, setShowCart] = useState(false);
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible({
+      initialIsVisible: false,
+    });
   const user = useAppSelector(getUser);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -40,18 +44,16 @@ export default function Header() {
         <div className="header_actions_searchbar_container">
           <SearchBar />
         </div>
-        <div className="header_actions_cart_holder">
-          <IconButton
-            color="inherit"
-            aria-label="add to shopping cart"
-            onClick={() => {
-              setShowCart(!showCart);
-            }}
-          >
+        <div
+          ref={ref as RefObject<HTMLDivElement>}
+          className="header_actions_cart_holder"
+          onClick={() => setIsComponentVisible(!isComponentVisible)}
+        >
+          <IconButton color="inherit" aria-label="add to shopping cart">
             <AddShoppingCartIcon />
           </IconButton>
 
-          {showCart ? <ShoppingCartComponent /> : null}
+          <div>{isComponentVisible ? <ShoppingCartComponent /> : null}</div>
         </div>
 
         {user.token ? (

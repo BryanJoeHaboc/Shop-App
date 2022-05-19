@@ -21,7 +21,7 @@ const ShoppingCartComponent = () => {
   const dispatch = useAppDispatch();
 
   const handleCheckoutItems = async () => {
-    const result = await dispatch(checkOutItems()).unwrap();
+    const result = await dispatch(checkOutItems(null)).unwrap();
 
     if (result.message) {
       dispatch(clearCart());

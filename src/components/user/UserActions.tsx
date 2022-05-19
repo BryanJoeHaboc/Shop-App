@@ -49,7 +49,7 @@ const UserActions = (props: Props) => {
     }
   };
 
-  const handleCheckoutItems = async () => {
+  const handleCheckoutItem = async () => {
     const shoppingItem = {
       _id: props.product._id!.toString(),
       product: props.product,
@@ -66,7 +66,9 @@ const UserActions = (props: Props) => {
       console.log(responseAddItem);
 
       if (responseAddItem.message) {
-        const responseCheckout = await dispatch(checkOutItems()).unwrap();
+        const responseCheckout = await dispatch(
+          checkOutItems(props.product)
+        ).unwrap();
         if (responseCheckout.message) {
           navigate("/orders");
         }
@@ -124,7 +126,7 @@ const UserActions = (props: Props) => {
                 <ButtonWithTheme
                   sx={{ width: "150px" }}
                   display="Yes"
-                  clickFunc={handleCheckoutItems}
+                  clickFunc={handleCheckoutItem}
                 />
                 <ButtonWithTheme
                   display="No"

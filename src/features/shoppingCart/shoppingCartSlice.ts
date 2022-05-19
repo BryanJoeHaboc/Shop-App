@@ -3,8 +3,9 @@ import ShoppingCart from "../../../interfaces/shoppingCart";
 import ShoppingItem from "../../../interfaces/shoppingItem";
 import { RootState } from "../../app/store";
 import ErrorPayload from "../../../interfaces/errorPayload";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { SuccessMessage } from "../../../interfaces/successMessage";
+import Product from "../../../interfaces/product";
 
 const initialState: ShoppingCart = {
   items: [],
@@ -12,20 +13,27 @@ const initialState: ShoppingCart = {
 
 export const checkOutItems = createAsyncThunk<
   SuccessMessage,
-  void,
+  Product | null,
   {
     rejectValue: ErrorPayload | AxiosError;
   }
->("cart/checkout", async (_, thunkApi) => {
+>("cart/checkout", async (product, thunkApi) => {
   try {
     const { user } = thunkApi.getState() as RootState;
-    const response = await axios({
+
+    const config: AxiosRequestConfig<any> = {
       method: "post",
       url: "/checkout/success",
       headers: {
         Authorization: `Bearer: ${user.token}`,
       },
-    });
+    };
+
+    if (product) {
+      config.data = { product };
+    }
+
+    const response = await axios(config);
 
     if (response.status !== 200) {
       return thunkApi.rejectWithValue(response.data as ErrorPayload);

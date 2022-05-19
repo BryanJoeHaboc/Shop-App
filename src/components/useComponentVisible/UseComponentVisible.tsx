@@ -7,13 +7,10 @@ interface Props {
 export default function useComponentVisible({ initialIsVisible }: Props) {
   const [isComponentVisible, setIsComponentVisible] =
     useState(initialIsVisible);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-    if (
-      ref.current &&
-      !ref.current.contains(event.target as HTMLInputElement)
-    ) {
+    if (ref.current && !ref.current.contains(event.target as HTMLDivElement)) {
       setIsComponentVisible(false);
     }
   };

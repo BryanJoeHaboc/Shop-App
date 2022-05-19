@@ -23,6 +23,22 @@ export default function CustomizedInputBase() {
   const inputSearchBar = useRef<HTMLInputElement | null>(null);
   const miniProductsDiv = useRef<HTMLDivElement | null>(null);
 
+  const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+    if (
+      miniProductsDiv.current &&
+      !miniProductsDiv.current.contains(event.target as HTMLDivElement)
+    ) {
+      setOpenFilter(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
+
   const handleSearchProducts = (e: {}) => {
     const event = e as React.ChangeEvent<HTMLInputElement>;
     setSearchValue(event.target.value);
