@@ -38,7 +38,7 @@ const ShoppingItemComponent = ({
 
   return (
     <div className="shopping_cart_items">
-      <img src={product.imageUrl} alt="" />
+      <img loading="lazy" src={product.imageUrl} alt="" />
       <div className="shopping_cart_items_info">
         <p className="bold_900">{product.name}</p>
         <p className="bold_600">Price: {product.price}</p>

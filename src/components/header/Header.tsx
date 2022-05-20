@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import SearchBar from "../searchbar/searchbar.component";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import IconButton from "@mui/material/IconButton";
@@ -35,7 +35,11 @@ export default function Header() {
       <div className="header_logo_container">
         <Link to="/">
           {" "}
-          <FavoriteIcon />
+          <h1>Shopper</h1>
+        </Link>
+        <Link to="/">
+          {" "}
+          <ShoppingBasketIcon />
         </Link>
       </div>
       {user.userType === "admin" ? <AdminHeader /> : <UserHeader />}

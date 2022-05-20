@@ -18,7 +18,7 @@ export default function Card({ menuItem }: Props) {
 
   return (
     <div onClick={handleOnClick} className={`card_container ${size}`}>
-      <img src={imageUrl} alt={title} />
+      <img loading="lazy" src={imageUrl} alt={title} />
       <p className="pointer">{title.toUpperCase()}</p>
     </div>
   );

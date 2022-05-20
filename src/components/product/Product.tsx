@@ -28,7 +28,12 @@ export default function ProductComponent(props: Props) {
     <div
       className={`product_container ${props.cssStyle ? props.cssStyle : ""}`}
     >
-      <img src={imageUrl} onClick={handleNavigateProductPage} alt="name" />
+      <img
+        loading="lazy"
+        src={imageUrl}
+        onClick={handleNavigateProductPage}
+        alt="name"
+      />
       <p>{name}</p>
       <p>${price}</p>
       {props.enableDescription ? description : null}

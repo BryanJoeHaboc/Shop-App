@@ -33,7 +33,7 @@ export default function RenderCategory() {
         <Pagination
           category={singleCategory}
           count={singleCategory.items.length}
-          itemsPerPage={4}
+          itemsPerPage={10}
         />
       }
     </>

@@ -66,7 +66,11 @@ const Orders = () => {
                       {order.products.map((product) => {
                         return (
                           <div>
-                            <img src={product.imageUrl} alt="product" />
+                            <img
+                              loading="lazy"
+                              src={product.imageUrl}
+                              alt="product"
+                            />
 
                             <h2>{product.name}</h2>
                             <h2>${product.price}</h2>

@@ -67,7 +67,7 @@ function App() {
             <Route index element={<Homepage />} />
             <Route path="cart" element={<ShoppingCartComponent />}></Route>
             <Route path="products">
-              <Route index element={<AllProducts itemsPerPage={10} />} />
+              <Route index element={<AllProducts itemsPerPage={30} />} />
               <Route path=":categoryType" element={<RenderCategory />} />
             </Route>
             <Route path="product">
