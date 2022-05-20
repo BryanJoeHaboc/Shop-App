@@ -28,9 +28,6 @@ export default function SignUp() {
     for (let i = 0; i < word.length; i++) {
       if (iChars.indexOf(word.charAt(i)) !== -1) {
         return true;
-        // alert(
-        //   "Your username has special characters. \nThese are not allowed.\n Please remove them and try again."
-        // );
       }
     }
   };
@@ -74,6 +71,9 @@ export default function SignUp() {
   return (
     <div className="login_page_container">
       <h1>Shopper</h1>
+      <p className="error bold_600">
+        Recommended: Use a dummy credential for signing up.
+      </p>
       <h3 className="error">{error}</h3>
       <form
         className="login_page_form_container"

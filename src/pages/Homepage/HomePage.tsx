@@ -1,7 +1,10 @@
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import { useEffect, useState } from "react";
+
 import Card from "../../components/menuItem/MenuItem";
 import section from "../../../interfaces/menuItem";
 import "./HomePage.scss";
-import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   addAllProducts,
@@ -9,6 +12,8 @@ import {
   getProducts,
   getProductsFromDB,
 } from "../../features/product/productSlice";
+import Modal from "../../components/modal/Modal";
+import ButtonWithTheme from "../../components/custom-button/ButtonWithTheme";
 
 const INITIAL_STATE = {
   sections: [
@@ -48,6 +53,7 @@ const INITIAL_STATE = {
 };
 
 export default function Homepage() {
+  const [toggleModal, setToggleModal] = useState(true);
   const allProducts = useAppSelector(getProducts);
   const dispatch = useAppDispatch();
 
@@ -75,6 +81,63 @@ export default function Homepage() {
 
   return (
     <div className="homepage_container">
+      <Modal
+        children={
+          <div style={{ display: "block" }}>
+            <span>
+              <h1>
+                Welcome to Shopper <ShoppingBasketIcon />
+              </h1>
+            </span>
+            <p style={{ textAlign: "left" }}>
+              This is a POC application made with{" "}
+              <span className="bold_600">Typescript React Redux</span> as the
+              Frontend and <span className="bold_600">Express Mongoose</span> as
+              the Backend.{" "}
+            </p>
+            <br />
+
+            <p style={{ textAlign: "left" }}>
+              When using the app,{" "}
+              <span className="error bold_600">
+                DO NOT USE YOUR PERSONAL EMAIL
+              </span>
+              . You may use a dummy email instead.
+            </p>
+            <br />
+            <p className="bold_600" style={{ textAlign: "left" }}>
+              You may check the Github Repository at:
+            </p>
+            <br />
+            <p className="bold_600">
+              <a
+                href="https://github.com/BryanJoeHaboc/Shop-App"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <GitHubIcon />: Frontend
+              </a>
+            </p>
+            <p className="bold_600">
+              <a
+                href="https://github.com/BryanJoeHaboc/NodeRefresher"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <GitHubIcon />: Backend
+              </a>
+            </p>
+            <br />
+            <ButtonWithTheme
+              display="okay"
+              clickFunc={() => setToggleModal(!toggleModal)}
+            />
+          </div>
+        }
+        shown={toggleModal}
+        close={() => setToggleModal(!toggleModal)}
+        modalContentClass="modal-greetings"
+      />
       {INITIAL_STATE.sections.map((menuItem: section) => (
         <Card menuItem={menuItem} key={menuItem._id} />
       ))}

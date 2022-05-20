@@ -5,8 +5,8 @@
   display: flex;
   height: 5rem;
   align-items: center;
-  gap: 15rem;
-  justify-content: center;
+  // gap: 15rem;
+  justify-content: space-around;
   z-index: 5;
   background-color: white;
 
@@ -25,7 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.5rem;
     font-size: 1.25rem;
     padding: 0 2rem;
 
