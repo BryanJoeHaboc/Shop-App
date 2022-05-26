@@ -15,7 +15,12 @@ const container = document.getElementById("root");
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 const axios = require("axios").default;
 
-axios.defaults.baseURL = "http://localhost:5000";
+if (process.env.NODE_ENV === "production") {
+  axios.defaults.baseURL =
+    "https://ecommerce-backend-dot-ecommerce-app-350710.uc.r.appspot.com/";
+} else {
+  axios.defaults.baseURL = "http://localhost:5000";
+}
 
 root.render(
   <React.StrictMode>
