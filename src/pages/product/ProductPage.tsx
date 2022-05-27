@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Product from "../../../interfaces/product";
-import MiniProducts from "../../components/mini-products/MiniProducts";
 import ProductComponent from "../../components/product/Product";
 
 import "./ProductPage.scss";

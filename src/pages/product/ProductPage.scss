@@ -1,5 +1,6 @@
 .product__page {
   display: flex;
+  width: 45%;
   margin: 25px auto auto auto;
   // padding-top: 50px;
   flex-direction: column;
@@ -8,4 +9,6 @@
   // min-height: 55%;
   // max-width: 25%;
   font-size: 1.5rem;
+  text-align: left;
+  padding: 1rem;
 }
