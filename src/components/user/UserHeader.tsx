@@ -13,7 +13,7 @@ const UserHeader = () => {
       <Link to="/products/mens">Mens</Link>
       <Link to="/products/hats">Hats</Link>
       <Link to="/products/sneakers">Sneakers</Link>
-      <Link to="/products/bags">Bags</Link>
+      {/* <Link to="/products/bags">Bags</Link> */}
     </nav>
   );
 };

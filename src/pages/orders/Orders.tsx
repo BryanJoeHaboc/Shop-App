@@ -46,44 +46,46 @@ const Orders = () => {
 
   return (
     <div>
-      {orders.length > 0
-        ? orders.map((order) => {
-            return (
-              <div className="order__invoices" key={order._id}>
-                <div className="order__invoices__body">
-                  <div className="order__invoices__body__actions">
-                    <h1> Order: {order._id}</h1>
-                    <div className="order__invoices__body__actions__button">
-                      <ButtonWithTheme
-                        display="Get Invoice"
-                        clickFunc={() => handleGetInvoice(order._id)}
-                      />
-                    </div>
+      {orders.length > 0 ? (
+        orders.map((order) => {
+          return (
+            <div className="order__invoices" key={order._id}>
+              <div className="order__invoices__body">
+                <div className="order__invoices__body__actions">
+                  <h1> Order: {order._id}</h1>
+                  <div className="order__invoices__body__actions__button">
+                    <ButtonWithTheme
+                      display="Get Invoice"
+                      clickFunc={() => handleGetInvoice(order._id)}
+                    />
                   </div>
-                  <details>
-                    <summary>Expand to see products</summary>
-                    <div className="order__invoices__body__products">
-                      {order.products.map((product) => {
-                        return (
-                          <div>
-                            <img
-                              loading="lazy"
-                              src={product.imageUrl}
-                              alt="product"
-                            />
+                </div>
+                <details>
+                  <summary>Expand to see products</summary>
+                  <div className="order__invoices__body__products">
+                    {order.products.map((product) => {
+                      return (
+                        <div>
+                          <img
+                            loading="lazy"
+                            src={product.imageUrl}
+                            alt="product"
+                          />
 
-                            <h2>{product.name}</h2>
-                            <h2>${product.price}</h2>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </details>
-                </div>{" "}
-              </div>
-            );
-          })
-        : "No Available Products"}
+                          <h2>{product.name}</h2>
+                          <h2>${product.price}</h2>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </details>
+              </div>{" "}
+            </div>
+          );
+        })
+      ) : (
+        <h1>No Available Products</h1>
+      )}
       {toggleModal && (
         <Modal
           children={

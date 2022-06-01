@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   addProduct,
   addProductsToDB,
+  addUploadedProducts,
   editProduct,
   editProductFromDB,
 } from "../../features/product/productSlice";
@@ -144,7 +145,7 @@ export default function AddProducts() {
       /* Convert array of arrays */
       const data = utils.sheet_to_json(ws, { header: 1 });
       try {
-        await axios.post(
+        const response = await axios.post(
           "/admin/products",
           { data, userId: user.userId },
           {
@@ -154,6 +155,7 @@ export default function AddProducts() {
           }
         );
 
+        dispatch(addUploadedProducts(response.data.products));
         navigate("/admin/products", {
           state: { message: "Products Added Successfully" },
         });

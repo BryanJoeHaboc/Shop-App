@@ -37,14 +37,15 @@ const AllProducts = ({ itemsPerPage }: Props) => {
 
   useEffect(() => {
     console.log(location);
+    let state: { message: string } = location.state as { message: string };
     if (user.userType === "admin") {
-      let state = location.state as { message: string };
       if (state && state.message) {
         setModalMessages(state.message);
         setToggleModal(!toggleModal);
+        location.state = {};
       }
     }
-  }, [location.state]);
+  }, [location.state, location]);
 
   useEffect(() => {
     console.log(searchParams.get("search"));

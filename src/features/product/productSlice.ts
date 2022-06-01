@@ -206,31 +206,9 @@ export const productSlice = createSlice({
   initialState,
   reducers: {
     addAllProducts: (state, action: PayloadAction<Product[]>) => {
-      // state.collections = action.payload.collections;
-      // state.totalItems = action.payload.totalItems;
       state.items = action.payload;
     },
     addProduct: (state, action: PayloadAction<Product>) => {
-      // const index = state.collections.findIndex(
-      //   (category) => category.title === action.payload.title
-      // );
-      // if (index < 0) {
-      //   state.collections.push({
-      //     _id: state.collections.length + 1,
-      //     title: action.payload.title,
-      //     routeName:
-      //       action.payload.title.charAt(0).toUpperCase() +
-      //       action.payload.title.slice(1),
-      //     items: [],
-      //   });
-      //   state.collections[state.collections.length + 1].items.push(
-      //     action.payload
-      //   );
-      // } else {
-      //   const item = action.payload as Product;
-      //   console.log(item);
-      //   state.collections[index].items.push(item);
-      // }
       state.items.push(action.payload);
 
       const index = state.categories.findIndex(
@@ -242,40 +220,15 @@ export const productSlice = createSlice({
       }
     },
     deleteProduct: (state, action: PayloadAction<Product>) => {
-      // const index = state.collections.findIndex(
-      //   (category) => category.title === action.payload.title
-      // );
-
-      // const collections = state.collections[index];
-
-      // const tempArray: Product[] = state.collections[index].items.filter(
-      //   (product) => product._id !== action.payload._id
-      // );
-
-      // state.collections[index] = {
-      //   _id: collections._id,
-      //   routeName: collections.routeName,
-      //   title: collections.title,
-      //   items: tempArray,
-      // };
-      state.items = state.items.filter(
-        (product) => product._id !== action.payload._id
+      const index = state.items.findIndex(
+        (product) => product._id === action.payload._id
       );
-      console.log(state.items);
+
+      state.items = state.items
+        .slice(0, index)
+        .concat(state.items.slice(index + 1));
     },
     editProduct: (state, action: PayloadAction<Product>) => {
-      //   const index = state.collections.findIndex(
-      //     (category) => category.title === action.payload.title
-      //   );
-      //   const tempArray = state.collections[index].items.map((product) => {
-      //     if (product._id === action.payload._id) {
-      //       return action.payload;
-      //     }
-      //     return product;
-      //   });
-      //   state.collections[index].items = tempArray;
-      // },
-
       const tempArray = state.items.map((product) => {
         if (product._id === action.payload._id) {
           return action.payload;
@@ -301,29 +254,11 @@ export const productSlice = createSlice({
       state.items = [];
       state.totalItems = 0;
     },
+    addUploadedProducts: (state, action: PayloadAction<Product[]>) => {
+      state.items = state.items.concat(action.payload);
+      console.log(state.items);
+    },
   },
-
-  // extraReducers: (builder) => {
-  //   builder.addCase(getProductsFromDB.fulfilled, (state, action) => {
-  //     state.collections = action.payload.collections;
-  //     state.status = "success";
-  //   });
-  //   builder.addCase(getProductsFromDB.pending, (state) => {
-  //     state.status = "loading";
-  //   });
-  //   builder.addCase(getProductsFromDB.rejected, (state, action) => {
-  //     state.status = "failed";
-  //   });
-  //   builder.addCase(addProductsToDB.fulfilled, (state) => {
-  //     state.status = "success";
-  //   });
-  //   builder.addCase(addProductsToDB.pending, (state) => {
-  //     state.status = "loading";
-  //   });
-  //   builder.addCase(addProductsToDB.rejected, (state) => {
-  //     state.status = "failed";
-  //   });
-  // },
 });
 
 export const getProducts = (state: RootState) => {
@@ -338,10 +273,6 @@ export const getCategories = (state: RootState) => {
   return state.product.categories;
 };
 
-// export const getAdminProduct = (state: RootState) => {
-//   const collections = state.product.collections;
-// };
-
 export const {
   addAllProducts,
   addProduct,
@@ -350,6 +281,7 @@ export const {
   addCategories,
   addCategory,
   clearProducts,
+  addUploadedProducts,
 } = productSlice.actions;
 
 export default productSlice.reducer;
